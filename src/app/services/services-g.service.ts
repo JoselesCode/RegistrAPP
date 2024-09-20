@@ -17,11 +17,12 @@ export class ServicesG {
     if (usuario === this.usuarioAlumno && contrasena === this.contrasenaAlumno) {
       return 'alumno';
     } else if (usuario === this.usuarioDocente && contrasena === this.contrasenaDocente) {
-      return 'docente';
+      return 'docente'; // Retorna 'docente' si las credenciales son correctas
     } else {
       return "";
     }
   }
+  
 
   obtenerContrasenaAccesoDocente(): string {
     return this.accesoDocente;

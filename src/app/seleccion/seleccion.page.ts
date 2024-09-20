@@ -32,19 +32,38 @@ export class SeleccionPage {
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
+          handler: () => {
+            return true; // El cuadro de diálogo se cierra al cancelar.
+          }
         },
         {
           text: 'Iniciar sesión',
           handler: (data) => {
+            if (!data.codigoAcceso) {
+              this.mostrarError('Por favor, ingrese el código de acceso.');
+              return false; // El diálogo no se cierra si falta el código de acceso.
+            }
             if (data.codigoAcceso === this.servicesG.obtenerContrasenaAccesoDocente()) {
               this.router.navigate(['/docente']);
+              return true; // Se navega a la página docente y el diálogo se cierra.
             } else {
-              console.log('Código de acceso incorrecto');
+              this.mostrarError('Código de acceso incorrecto.');
+              return false; // El diálogo permanece abierto si el código es incorrecto.
             }
           }
         }
       ]
+    });
+
+    await alert.present();
+  }
+
+  async mostrarError(mensaje: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: mensaje,
+      buttons: ['OK']
     });
 
     await alert.present();

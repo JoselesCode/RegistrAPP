@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <h1 class="ion-text-center">RegistrAPP</h1>
+    <h5 class="ion-text-center"> Registra tu asistencia 100% Confiable</h5>
     <ion-title>Inicio de Sesión</ion-title>
+    <hr>
   </ion-toolbar>
 </ion-header>
 
@@ -9,11 +12,14 @@
     <ion-label position="floating">Usuario</ion-label>
     <ion-input [(ngModel)]="usuario"></ion-input>
   </ion-item>
+  <ion-text color="danger" *ngIf="mensajeUsuario">{{ mensajeUsuario }}</ion-text>
 
   <ion-item>
     <ion-label position="floating">Contraseña</ion-label>
     <ion-input type="password" [(ngModel)]="contrasena"></ion-input>
   </ion-item>
+  <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
 
-  <ion-button expand="full" (click)="login()">Iniciar Sesión</ion-button>
+  <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
+  <ion-button expand="full" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
 </ion-content>
