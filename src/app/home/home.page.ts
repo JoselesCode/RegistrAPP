@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServicesG } from '../services/services-g.service';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -57,5 +58,8 @@ export class HomePage {
     this.contrasena = '';
     this.mensajeUsuario = '';
     this.mensajeContrasena = '';
+  }
+  RestablecerC() {
+    this.router.navigate(['/restablecer-contrasena']);
   }
 }

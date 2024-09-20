@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <h1 class="ion-text-center">RegistrAPP</h1>
-    <h5 class="ion-text-center"> Registra tu asistencia 100% Confiable</h5>
+    <h5 class="ion-text-center">Registra tu asistencia de forma rápida y segura</h5>
     <ion-title>Inicio de Sesión</ion-title>
     <hr>
   </ion-toolbar>
@@ -20,6 +20,17 @@
   </ion-item>
   <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
 
-  <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
-  <ion-button expand="full" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
+  <ion-button expand="full" style="--background: #ffeb3b;"(click)="login()">Iniciar Sesión</ion-button>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" fill="outline" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" fill="outline" color="primary" (click)="RestablecerC()">Recuperar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

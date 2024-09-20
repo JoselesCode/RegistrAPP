@@ -26,7 +26,7 @@ export class SeleccionPage {
         {
           name: 'codigoAcceso',
           type: 'password',
-          placeholder: 'Ingresa el código de acceso de docente'
+          placeholder: 'Ingresa el código de acceso'
         }
       ],
       buttons: [
@@ -38,7 +38,7 @@ export class SeleccionPage {
           }
         },
         {
-          text: 'Iniciar sesión',
+          text: 'Verificar',
           handler: (data) => {
             if (!data.codigoAcceso) {
               this.mostrarError('Por favor, ingrese el código de acceso.');
