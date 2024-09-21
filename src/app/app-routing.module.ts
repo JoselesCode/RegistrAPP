@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'docente',
     loadChildren: () => import('./docente/docente.module').then(m => m.DocentePageModule)
+  },  {
+    path: 'recuperar-c',
+    loadChildren: () => import('./recuperar-c/recuperar-c.module').then( m => m.RecuperarCPageModule)
   },
+
 ];
 
 @NgModule({

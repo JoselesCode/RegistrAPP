@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recuperar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Usuario</ion-label>
+    <ion-input [(ngModel)]="usuario"></ion-input>
+  </ion-item>
+  <ion-text color="danger" *ngIf="mensajeUsuario">{{ mensajeUsuario }}</ion-text>
+
+  <ion-button expand="full" style="--background: #ffeb3b;" (click)="recuperarContrasena()">Recuperar Contraseña</ion-button>
+</ion-content>

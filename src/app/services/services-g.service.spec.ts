@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { ServicesG } from './services-g.service'; // Asegúrate de que este nombre sea correcto
 
-import { ServicesGService } from './services-g.service';
-
-describe('ServicesGService', () => {
-  let service: ServicesGService;
+describe('ServicesG', () => { // Cambia 'ServicesGService' por 'ServicesG'
+  let service: ServicesG;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ServicesGService);
+    service = TestBed.inject(ServicesG);
   });
 
   it('should be created', () => {

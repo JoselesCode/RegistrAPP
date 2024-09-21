@@ -31,11 +31,12 @@ export class HomePage {
       return;
     }
   
+    // El usuario es redirigimos a la selección (pagina siguiente)
     const rol = this.servicesG.validarUsuario(this.usuario, this.contrasena);
     if (rol === 'alumno') {
       this.router.navigate(['/seleccion']);
     } else if (rol === 'docente') {
-      // Si es docente, lo redirigimos a la selección
+      
       this.router.navigate(['/seleccion']);
     } else {
       await this.mostrarAlerta('Credenciales incorrectas', 'Usuario o contraseña no válidos.');
@@ -60,6 +61,6 @@ export class HomePage {
     this.mensajeContrasena = '';
   }
   RestablecerC() {
-    this.router.navigate(['/restablecer-contrasena']);
+    this.router.navigate(['/recuperar-c']);
   }
 }
