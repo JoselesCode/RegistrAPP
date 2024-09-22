@@ -31,25 +31,25 @@ export class SeleccionPage {
       ],
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancelar',// El cuadro se cierra al cancelar.
           role: 'cancel',
           handler: () => {
-            return true; // El cuadro de diálogo se cierra al cancelar.
+            return true; 
           }
         },
         {
-          text: 'Verificar',
+          text: 'Verificar',// El cuadro no se cierra si falta el código de acceso.
           handler: (data) => {
             if (!data.codigoAcceso) {
               this.mostrarError('Por favor, ingrese el código de acceso.');
-              return false; // El diálogo no se cierra si falta el código de acceso.
+              return false; 
             }
             if (data.codigoAcceso === this.servicesG.obtenerContrasenaAccesoDocente()) {
               this.router.navigate(['/docente']);
-              return true; // Se navega a la página docente y el diálogo se cierra.
+              return true; // Se navega a la página docente 
             } else {
               this.mostrarError('Código de acceso incorrecto.');
-              return false; // El diálogo permanece abierto si el código es incorrecto.
+              return false; // El cuadro permanece abierto si el código es incorrecto.
             }
           }
         }
