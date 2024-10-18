@@ -33,9 +33,9 @@ export class HomePage {
   
     // El usuario es redirigimos a la selección (pagina siguiente)
     const rol = this.servicesG.validarUsuario(this.usuario, this.contrasena);
-    if (rol === 'alumno') {
+    if (await rol === 'alumno') {
       this.router.navigate(['/seleccion']);
-    } else if (rol === 'docente') {
+    } else if (await rol === 'docente') {
       
       this.router.navigate(['/seleccion']);
     } else {

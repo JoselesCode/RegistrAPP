@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServicesG } from '../services/services-g.service';
+import { Location } from '@angular/common'; // Importar Location
 
 @Component({
   selector: 'app-seleccion',
@@ -12,7 +13,8 @@ export class SeleccionPage {
   constructor(
     private router: Router, 
     private alertController: AlertController, 
-    private servicesG: ServicesG
+    private servicesG: ServicesG,
+    private location: Location // Inyectar Location
   ) {}
 
   irAlumno() {
@@ -31,14 +33,14 @@ export class SeleccionPage {
       ],
       buttons: [
         {
-          text: 'Cancelar',// El cuadro se cierra al cancelar.
+          text: 'Cancelar',
           role: 'cancel',
           handler: () => {
             return true; 
           }
         },
         {
-          text: 'Verificar',// El cuadro no se cierra si falta el código de acceso.
+          text: 'Verificar',
           handler: (data) => {
             if (!data.codigoAcceso) {
               this.mostrarError('Por favor, ingrese el código de acceso.');
@@ -57,6 +59,14 @@ export class SeleccionPage {
     });
 
     await alert.present();
+  }
+
+  volver() {
+    this.location.back(); // Regresar a la página anterior
+  }
+
+  cerrarSesion() {
+    this.router.navigate(['/home']); // Redirigir al login
   }
 
   async mostrarError(mensaje: string) {

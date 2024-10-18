@@ -1,0 +1,12 @@
+.cuadro-boton {
+    border: 2px solid var(--ion-color-primary); /* Borde de color primario */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px; /* Relleno interno del botón */
+    background-color: var(--ion-color-light); /* Color de fondo */
+    color: var(--ion-color-primary); /* Color del texto */
+  }
+  
+  .cuadro-boton:hover {
+    background-color: var(--ion-color-primary); /* Color de fondo al pasar el ratón */
+    color: var(--ion-color-light); /* Color del texto al pasar el ratón */
+  }

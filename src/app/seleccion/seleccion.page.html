@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
+
     <h1 class="ion-text-center">RegistrAPP</h1>
     <h5 class="ion-text-center">Registra tu asistencia de forma rápida y segura</h5>
     <ion-title>Selecciona tu Rol:</ion-title>
     <hr>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" shape="round" class="cuadro-boton">Volver</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarSesion()" shape="round" class="cuadro-boton">Cerrar Sesión</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
