@@ -6,13 +6,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WeatherService {
-  private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
-  private apiUrl: string = 'https://api.openweathermap.org/data/2.5/weather'; // URL base de la API
+  obtenerDatosClima() {
+    throw new Error('Method not implemented.');
+  }
+  private apiKey: string = '606d647c5e9f50c12197183edb586441';
+  private apiUrl: string = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${this.apiKey}&units=metric`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  obtenerClima(comuna: string): Observable<any> {
-    const url = `${this.apiUrl}?q=${comuna},CL&appid=${this.apiKey}&units=metric`; // CL es el código de país para Chile
-    return this.http.get(url);
+  obtenerClimaSanJoaquin(): Observable<any> {
+    return this.http.get<any>(this.apiUrl); // Retorna un observable de la respuesta
   }
 }

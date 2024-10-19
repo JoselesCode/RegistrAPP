@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { HttpClient } from '@angular/common/http'; // Importar HttpClient para consumir la API del clima
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { WeatherService } from './weather.service'; // Asegúrate de importar el servicio de clima
 
@@ -8,8 +8,11 @@ import { WeatherService } from './weather.service'; // Asegúrate de importar el
   providedIn: 'root'
 })
 export class ServicesG {
+  obtenerClimaSanJoaquin(): Observable<any> {
+    return this.http.get<any>(this.apiUrl); // Retorna un observable de la respuesta
+  }
   private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
-  private apiUrl: string = 'const url = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${apiKey}&units=metric`;' + this.apiKey + '&units=metric';
+  private apiUrl: string = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${this.apiKey}&units=metric`;
 
   private usuarioDocente = 'docente'; // Usuario Docente
   private contrasenaDocente = '1234'; // Contraseña de inicio de sesión del docente
@@ -20,7 +23,7 @@ export class ServicesG {
 
   private usuarioActual: string | null = null; // Almacenar el usuario actual
   private _storage: Storage | null = null; // Para manejar el almacenamiento
-  
+
   constructor(private storage: Storage, private http: HttpClient, private weatherService: WeatherService) { 
     this.init(); // Inicializar el storage
   }
@@ -31,8 +34,9 @@ export class ServicesG {
   }
 
   // Método para obtener el clima de San Joaquín
-  obtenerClimaSanJoaquin() {
-    return this.weatherService.obtenerClima('San Joaquín');
+  obtenerClima(ciudad: string): Observable<any> {
+    const url = `${this.apiUrl}&q=${ciudad}`; // Asegúrate de construir la URL correctamente
+    return this.http.get(url);
   }
   
   // Validar usuario y guardar en Storage

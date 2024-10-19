@@ -25,11 +25,11 @@ export class HomePage implements OnInit {
   async obtenerClima() {
     try {
       this.servicesG.obtenerClimaSanJoaquin().subscribe(
-        (data) => {
+        (data: any) => {
           this.clima = data;
           this.climaError = ''; // Limpiar mensaje de error si la solicitud es exitosa
         },
-        (error) => {
+        (error: any) => {
           console.error('Error obteniendo el clima:', error);
           this.climaError = 'No se pudo obtener el clima. Intente de nuevo más tarde.';
         }
@@ -54,10 +54,10 @@ export class HomePage implements OnInit {
       return;
     }
 
-    const rol = this.servicesG.validarUsuario(this.usuario, this.contrasena);
-    if (await rol === 'alumno') {
+    const rol = await this.servicesG.validarUsuario(this.usuario, this.contrasena); // Esperar el resultado de la validación
+    if (rol === 'alumno') {
       this.router.navigate(['/seleccion']);
-    } else if (await rol === 'docente') {
+    } else if (rol === 'docente') {
       this.router.navigate(['/seleccion']);
     } else {
       await this.mostrarAlerta('Credenciales incorrectas', 'Usuario o contraseña no válidos.');
@@ -83,5 +83,9 @@ export class HomePage implements OnInit {
 
   RestablecerC() {
     this.router.navigate(['/recuperar-c']);
+  }
+
+  getIconUrl(iconCode: string): string {
+    return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
 }

@@ -8,39 +8,46 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Usuario</ion-label>
-    <ion-input [(ngModel)]="usuario"></ion-input>
-  </ion-item>
-  <ion-text color="danger" *ngIf="mensajeUsuario">{{ mensajeUsuario }}</ion-text>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input [(ngModel)]="usuario"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="mensajeUsuario">{{ mensajeUsuario }}</ion-text>
 
-  <ion-item>
-    <ion-label position="floating">Contraseña</ion-label>
-    <ion-input type="password" [(ngModel)]="contrasena"></ion-input>
-  </ion-item>
-  <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="contrasena"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
 
-  <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
+      <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button expand="block" fill="outline" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button expand="block" fill="outline" color="primary" (click)="RestablecerC()">Recuperar</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" fill="outline" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" fill="outline" color="primary" (click)="RestablecerC()">Recuperar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
   <!-- Sección para mostrar el clima -->
-  <div *ngIf="clima.main && clima.weather" style="margin-top: 20px; text-align: center;">
-    <h3>Clima en San Joaquín:</h3>
-    <p>Temperatura: {{ clima.main.temp }} °C</p>
-    <p>Condiciones: {{ clima.weather[0].description }}</p>
+  <div *ngIf="clima.main && clima.weather" style="margin-top: 20px; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 20px; background-color: #e0e0e0; color: #333;">
+    <h3 style="color: #333;">Clima en San Joaquín:</h3>
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <img [src]="getIconUrl(clima.weather[0].icon)" alt="Icono del clima" style="width: 50px; height: 50px; margin-right: 10px;">
+      <p style="font-size: 24px; margin: 0;">Temperatura: {{ clima.main.temp | number:'1.0-0' }} °C</p>
+    </div>
+    <p style="color: #555;">Condiciones: {{ clima.weather[0].description }}</p>
   </div>
-
-<!-- Mensaje de error para el clima -->
+  
+  <!-- Mensaje de error para el clima -->
   <div *ngIf="climaError" style="color: red; text-align: center; margin-top: 20px;">
     <p>{{ climaError }}</p>
   </div>
