@@ -20,8 +20,7 @@
   </ion-item>
   <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
 
-  <ion-button expand="full" style="--background: #ffeb3b;"(click)="login()">Iniciar Sesión</ion-button>
-  
+  <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
 
   <ion-grid>
     <ion-row>
@@ -34,7 +33,19 @@
     </ion-row>
   </ion-grid>
 
+  <!-- Sección para mostrar el clima -->
+  <div *ngIf="clima.main && clima.weather" style="margin-top: 20px; text-align: center;">
+    <h3>Clima en San Joaquín:</h3>
+    <p>Temperatura: {{ clima.main.temp }} °C</p>
+    <p>Condiciones: {{ clima.weather[0].description }}</p>
+  </div>
+
+<!-- Mensaje de error para el clima -->
+  <div *ngIf="climaError" style="color: red; text-align: center; margin-top: 20px;">
+    <p>{{ climaError }}</p>
+  </div>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-title class="ion-text-center">

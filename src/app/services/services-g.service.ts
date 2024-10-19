@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { HttpClient } from '@angular/common/http'; // Importar HttpClient para consumir la API del clima
+import { Observable } from 'rxjs';
+import { WeatherService } from './weather.service'; // Asegúrate de importar el servicio de clima
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicesG {
-  cerrarSesion() {
-    throw new Error('Method not implemented.');
-  }
+  private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
+  private apiUrl: string = 'const url = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${apiKey}&units=metric`;' + this.apiKey + '&units=metric';
+
   private usuarioDocente = 'docente'; // Usuario Docente
   private contrasenaDocente = '1234'; // Contraseña de inicio de sesión del docente
   private accesoDocente = 'soydocente'; // Código de acceso del docente
@@ -17,8 +20,8 @@ export class ServicesG {
 
   private usuarioActual: string | null = null; // Almacenar el usuario actual
   private _storage: Storage | null = null; // Para manejar el almacenamiento
-
-  constructor(private storage: Storage) {
+  
+  constructor(private storage: Storage, private http: HttpClient, private weatherService: WeatherService) { 
     this.init(); // Inicializar el storage
   }
 
@@ -27,6 +30,11 @@ export class ServicesG {
     this._storage = storage;
   }
 
+  // Método para obtener el clima de San Joaquín
+  obtenerClimaSanJoaquin() {
+    return this.weatherService.obtenerClima('San Joaquín');
+  }
+  
   // Validar usuario y guardar en Storage
   async validarUsuario(usuario: string, contrasena: string): Promise<string> {
     if (usuario === this.usuarioAlumno && contrasena === this.contrasenaAlumno) {
@@ -56,23 +64,32 @@ export class ServicesG {
     return { usuario, contrasena };
   }
 
-  // Limpiar datos del Storage
+  // Limpiar datos del Storage (usado para cerrar sesión o limpiar los datos guardados)
   async limpiarDatos() {
     await this._storage?.clear();
   }
 
+  // Método para enviar un email de recuperación de contraseña
   enviarEmailRecuperacion(usuario: string): boolean {
-    if (usuario === 'usuarioExistente') {
+    if (usuario === 'usuarioExistente') { // Aquí debes implementar la lógica real para verificar el usuario
       return true;
     }
     return false; 
   }
 
+  // Obtener el usuario actual
   getUsuarioActual(): string | null {
     return this.usuarioActual; 
   }
 
+  // Obtener el código de acceso del docente
   obtenerContrasenaAccesoDocente(): string {
     return this.accesoDocente;
+  }
+
+  // Implementar el método para cerrar sesión limpiando los datos guardados
+  async cerrarSesion() {
+    await this.limpiarDatos();
+    this.usuarioActual = null;
   }
 }
