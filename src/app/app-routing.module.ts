@@ -17,15 +17,22 @@ const routes: Routes = [
   },
   {
     path: 'alumno',
-    loadChildren: () => import('./alumno/alumno.module').then(m => m.AlumnoPageModule)
+    loadChildren: () => import('./alumno/alumno.module').then(m => m.AlumnoPageModule),
+
   },
   {
     path: 'docente',
-    loadChildren: () => import('./docente/docente.module').then(m => m.DocentePageModule)
-  },  {
-    path: 'recuperar-c',
-    loadChildren: () => import('./recuperar-c/recuperar-c.module').then( m => m.RecuperarCPageModule)
+    loadChildren: () => import('./docente/docente.module').then(m => m.DocentePageModule),
+
   },
+  {
+    path: 'recuperar-c',
+    loadChildren: () => import('./recuperar-c/recuperar-c.module').then(m => m.RecuperarCPageModule)
+  },
+  {
+    path: '**',  // Esta ruta captura todas las rutas no definidas
+    loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
+  }
 
 ];
 

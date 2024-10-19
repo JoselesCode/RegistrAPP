@@ -11,6 +11,8 @@ export class ServicesG {
   obtenerClimaSanJoaquin(): Observable<any> {
     return this.http.get<any>(this.apiUrl); // Retorna un observable de la respuesta
   }
+  private usuarioAutenticado: boolean = false;
+
   private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
   private apiUrl: string = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${this.apiKey}&units=metric`;
 
@@ -95,5 +97,9 @@ export class ServicesG {
   async cerrarSesion() {
     await this.limpiarDatos();
     this.usuarioActual = null;
+  }
+
+  isAuthenticated(): boolean {
+    return this.usuarioAutenticado; // Debes implementar tu lógica de autenticación aquí
   }
 }
