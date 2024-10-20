@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServicesG } from '../services/services-g.service';
+import { Location } from '@angular/common'; // Importar Location
 
 @Component({
   selector: 'app-recuperar-c',
@@ -12,7 +13,12 @@ export class RecuperarCPage {
   usuario: string = '';
   mensajeUsuario: string = '';
 
-  constructor(private router: Router, private alertController: AlertController, private servicesG: ServicesG) {}
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private servicesG: ServicesG,
+    private location: Location // Inyectar Location en el constructor
+  ) {}
 
   async recuperarContrasena() {
     this.mensajeUsuario = '';
@@ -22,7 +28,7 @@ export class RecuperarCPage {
       return;
     }
 
-    //restablecer contraseña
+    // restablecer contraseña
     const exito = this.servicesG.enviarEmailRecuperacion(this.usuario);
     if (exito) {
       await this.mostrarAlerta('Éxito', 'Se ha enviado un correo para restablecer su contraseña.');
@@ -41,4 +47,9 @@ export class RecuperarCPage {
 
     await alert.present();
   }
+
+  volver() {
+    this.location.back(); // Usar el servicio Location para regresar
+  }
+
 }
