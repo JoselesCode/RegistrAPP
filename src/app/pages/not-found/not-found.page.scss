@@ -1,3 +1,67 @@
-:host {
-    display: block;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ion-content {
+  --background: #000000;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.content {
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: 80px;
+  font-weight: bold;
+  color: #e63946;
+}
+
+.error-message {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.error-description {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #0800ff;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.btn.secondary {
+  background-color: #2a9d8f;
+}
+
+.btn:hover {
+  background-color: #1d3557;
+}
+
+.image-container {
+  margin-top: 20px;
+}
+
+.error-image {
+  width: 300px;
+  height: auto;
+}

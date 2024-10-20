@@ -31,7 +31,7 @@ const routes: Routes = [
     loadChildren: () => import('./recuperar-c/recuperar-c.module').then(m => m.RecuperarCPageModule)
   },
   {
-    path: '**',  // Esta ruta captura todas las rutas no definidas
+    path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
   }
 ];
