@@ -45,12 +45,14 @@ export class ServicesG {
   async validarUsuario(usuario: string, contrasena: string): Promise<string> {
     if (usuario === this.usuarioAlumno && contrasena === this.contrasenaAlumno) {
       this.usuarioActual = usuario;
-      await this.guardarDatosUsuario(usuario, contrasena); // Guardar en Storage
+      await this.guardarDatosUsuario(usuario, contrasena);
+      localStorage.setItem('token', 'tokenAlumno'); // Simula el almacenamiento de un token
       return 'alumno';
     } else if (usuario === this.usuarioDocente && contrasena === this.contrasenaDocente) {
       this.usuarioActual = usuario;
-      await this.guardarDatosUsuario(usuario, contrasena); // Guardar en Storage
-      return 'docente'; 
+      await this.guardarDatosUsuario(usuario, contrasena);
+      localStorage.setItem('token', 'tokenDocente'); // Simula el almacenamiento de un token
+      return 'docente';
     } else {
       this.usuarioActual = null;
       return "";
@@ -96,10 +98,15 @@ export class ServicesG {
   // Implementar el método para cerrar sesión limpiando los datos guardados
   async cerrarSesion() {
     await this.limpiarDatos();
+    localStorage.removeItem('token'); // Elimina el token de autenticación al cerrar sesión
     this.usuarioActual = null;
   }
 
   isAuthenticated(): boolean {
     return this.usuarioAutenticado; // Debes implementar tu lógica de autenticación aquí
+  }
+  estaAutenticado(): boolean {
+    const token = localStorage.getItem('token');  // Verifica si existe un token en localStorage
+    return !!token;  // Retorna true si el token existe, false si no
   }
 }
