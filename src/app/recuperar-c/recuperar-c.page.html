@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Recuperar Contraseña</ion-title>
+    <hr>
+    <ion-title class="ion-text-center">Recuperar Contraseña</ion-title>
+    <hr>
     <h5 class="ion-text-center"> Ingresa tu Correo para recuperar contraseña</h5>
     <ion-buttons slot="start">
       <ion-button (click)="volver()" shape="round" class="cuadro-boton">Volver</ion-button>
@@ -10,10 +12,11 @@
 
 <ion-content>
   <ion-item>
+    <hr>
     <ion-label position="floating">Usuario</ion-label>
     <ion-input [(ngModel)]="usuario"></ion-input>
   </ion-item>
   <ion-text color="danger" *ngIf="mensajeUsuario">{{ mensajeUsuario }}</ion-text>
-
+  <hr>
   <ion-button expand="full" style="--background: #ffeb3b;" (click)="recuperarContrasena()">Recuperar Contraseña</ion-button>
 </ion-content>
