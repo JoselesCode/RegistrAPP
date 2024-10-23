@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ServicesG } from '../services/services-g.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner'; // Importar BarcodeScanner
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { isPlatform } from '@ionic/angular';
 
 @Component({
   selector: 'app-alumno',
@@ -13,41 +14,40 @@ export class AlumnoPage {
   usuario: string | null = '';
 
   constructor(private servicesG: ServicesG, private location: Location, private router: Router) {
-    this.usuario = this.servicesG.getUsuarioActual();
+    this.usuario = this.servicesG.getUsuarioActual(); 
   }
 
   volver() {
-    this.location.back();
+    this.location.back(); // Regresar a la página anterior
   }
 
   cerrarSesion() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']); // Redirigir al login
   }
 
-  // Método para iniciar el escaneo
-  async startScan() {
-    try {
-      // Solicitar permiso de cámara
-      const status = await BarcodeScanner.checkPermission({ force: true });
-      if (status.granted) {
-        // Ocultar la interfaz de la app para ver el escáner
-        BarcodeScanner.hideBackground();
-
-        // Iniciar el escaneo
-        const result = await BarcodeScanner.startScan();
-
-        // Verificar si hay contenido escaneado
-        if (result.hasContent) {
-          alert('Código QR detectado: ' + result.content); // Mostrar el contenido escaneado
+  async escanearQR() {
+    if (isPlatform('capacitor') || isPlatform('android') || isPlatform('ios')) {
+      try {
+        const status = await BarcodeScanner.checkPermission({ force: true });
+        if (status.granted) {
+          BarcodeScanner.hideBackground(); // Ocultar fondo al escanear
+          const result = await BarcodeScanner.startScan();
+          if (result.hasContent) {
+            alert('Código QR escaneado: ' + result.content);
+          } else {
+            alert('No se encontró contenido en el QR');
+          }
         } else {
-          alert('No se detectó ningún código QR');
+          alert('Permiso de cámara denegado');
         }
-
-      } else {
-        alert('Permiso de cámara denegado');
+      } catch (error) {
+        console.error('Error escaneando el código QR:', error);
+        alert('Hubo un error al escanear el QR');
+      } finally {
+        BarcodeScanner.showBackground(); // Mostrar fondo después de escanear
       }
-    } catch (e) {
-      console.error('Error al escanear:', e);
+    } else {
+      alert('Escaneo de QR no disponible en el navegador.');
     }
   }
 }
