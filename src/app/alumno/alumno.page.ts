@@ -49,5 +49,6 @@ export class AlumnoPage {
     } else {
       alert('Escaneo de QR no disponible en el navegador.');
     }
+    this.router.navigate(['/qr']);
   }
 }
