@@ -1,8 +1,9 @@
-const config = {
-  appId: 'com.example.app',
-  appName: 'RegistrAPP',
-  webDir: 'www',  // Asegúrate de que esta línea esté correctamente apuntando a la carpeta www
-  bundledWebRuntime: false
+import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'io.ionic.starter',
+  appName: 'qr-scanner',
+  webDir: 'www'
 };
 
 export default config;

@@ -13,19 +13,16 @@
 </ion-header>
 
 <ion-content>
-  <h2 class="ion-text-center">Bienvenido, {{ usuario }}</h2>
-
-  <!-- Botón para escanear el código QR -->
-  <div class="ion-padding">
-    <ion-buttons slot="end1">
-      <ion-button routerLink="/qr">
-        Escanear QR
-      </ion-button>
-    </ion-buttons>
-  </div>
-
-
-
+  <ion-list>
+    <ion-item *ngIf="result">
+      {{result}}
+    </ion-item>
+  </ion-list>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="scan()">
+      <ion-icon name="scan"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
 <ion-footer>
