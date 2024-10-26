@@ -19,6 +19,7 @@ export class ServicesG {
 
   private usuarioActual: string | null = null;
   private _storage: Storage | null = null;
+  private storageKey: string = 'historialQR'; 
 
   constructor(private storage: Storage, private http: HttpClient) {
     this.init();
@@ -59,13 +60,13 @@ export class ServicesG {
 
   // Guardar datos de usuario en Storage
   private async guardarDatosUsuario(usuario: string, contrasena: string) {
-    await this._storage?.set('usuario', usuario);
+    await this._storage?.set('usuarioActual', usuario);
     await this._storage?.set('contrasena', contrasena);
   }
 
   // Obtener datos de usuario desde Storage
   async obtenerDatosUsuario() {
-    const usuario = await this._storage?.get('usuario');
+    const usuario = await this._storage?.get('usuarioActual');
     const contrasena = await this._storage?.get('contrasena');
     return { usuario, contrasena };
   }
@@ -89,7 +90,7 @@ export class ServicesG {
   async cerrarSesion() {
     await this.limpiarDatos();
     localStorage.removeItem('token');
-    this.usuarioActual = null;
+    this.limpiarUsuarioActual(); // Limpia el usuario actual
   }
 
   // Verificar autenticación
@@ -100,5 +101,24 @@ export class ServicesG {
   // Obtener la contraseña de acceso del docente
   obtenerContrasenaAccesoDocente(): string {
     return this.accesoDocente; // Retorna la contraseña de acceso
+  }
+
+  // Guardar historial de QR por usuario
+  guardarHistorial(usuario: string, historial: string[]) {
+    const datos = this.obtenerHistorial(usuario) || [];
+    const nuevoHistorial = [...datos, ...historial];
+    localStorage.setItem(this.storageKey + usuario, JSON.stringify(nuevoHistorial));
+  }
+
+  // Obtener historial de QR por usuario
+  obtenerHistorial(usuario: string): string[] {
+    const datos = localStorage.getItem(this.storageKey + usuario);
+    return datos ? JSON.parse(datos) : [];
+  }
+
+  // Método para limpiar el usuario actual
+  limpiarUsuarioActual() {
+    localStorage.removeItem('usuarioActual'); // Limpiar el usuario actual del almacenamiento local
+    this.usuarioActual = null; // Limpiar la variable de usuarioActual
   }
 }

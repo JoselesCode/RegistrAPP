@@ -1,3 +1,4 @@
+// alumno.page.ts
 import { Component } from '@angular/core';
 import { ServicesG } from '../services/services-g.service';
 import { Location } from '@angular/common';
@@ -12,7 +13,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 export class AlumnoPage {
   usuario: string | null = '';
   result: string = ''; // Para almacenar el resultado del escaneo
-  historialQR: string[] = []; // Variable para el historial de QR leídos
+  historialQR: string[] = [];
 
   constructor(
     private servicesG: ServicesG,
@@ -20,6 +21,7 @@ export class AlumnoPage {
     private router: Router
   ) {
     this.usuario = this.servicesG.getUsuarioActual();
+    this.historialQR = this.servicesG.obtenerHistorial(this.usuario || ''); // Cargar el historial del usuario actual
   }
 
   volver() {
@@ -27,6 +29,7 @@ export class AlumnoPage {
   }
 
   cerrarSesion() {
+    this.servicesG.limpiarUsuarioActual(); // Limpiar el usuario actual al cerrar sesión
     this.router.navigate(['/home']); // Redirigir al login
   }
 
@@ -45,6 +48,7 @@ export class AlumnoPage {
       if (result.hasContent) {
         this.result = result.content; // Almacenar el resultado del escaneo
         this.historialQR.push(this.result); // Agregar al historial
+        await this.servicesG.guardarHistorial(this.usuario || '', [this.result]); // Guardar en el almacenamiento
         alert('Código QR escaneado: ' + result.content);
       } else {
         alert('No se encontró contenido en el código QR.');
