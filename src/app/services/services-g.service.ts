@@ -19,7 +19,7 @@ export class ServicesG {
 
   private usuarioActual: string | null = null;
   private _storage: Storage | null = null;
-  private storageKey: string = 'historialQR'; 
+  private storageKey: string = 'historialQR';
 
   constructor(private storage: Storage, private http: HttpClient) {
     this.init();
@@ -120,5 +120,16 @@ export class ServicesG {
   limpiarUsuarioActual() {
     localStorage.removeItem('usuarioActual'); // Limpiar el usuario actual del almacenamiento local
     this.usuarioActual = null; // Limpiar la variable de usuarioActual
+  }
+
+  // Método para obtener el rol del usuario actual desde el token en localStorage
+  obtenerRol(): string {
+    const token = localStorage.getItem('token');
+    if (token === 'tokenAlumno') {
+      return 'alumno';
+    } else if (token === 'tokenDocente') {
+      return 'docente';
+    }
+    return ''; // Retorna una cadena vacía si no hay rol
   }
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ServicesG } from '../services/services-g.service'; // Importa tu servicio de autenticación
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { ServicesG } from '../services/services-g.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +9,15 @@ export class AuthGuard implements CanActivate {
 
   constructor(private servicesG: ServicesG, private router: Router) {}
 
-  canActivate(): boolean {
-    // Verifica si el usuario está autenticado
-    if (this.servicesG.estaAutenticado()) { 
-      return true;
-    } else {
-      // Si no está autenticado, redirige al login
-      this.router.navigate(['/home']); 
+  canActivate(route: ActivatedRouteSnapshot, state: unknown): boolean {
+    const userRole: string = this.servicesG.obtenerRol();
+    
+    if (userRole === 'alumno' && route.url[0].path === 'docente') {
+      alert('No tienes permisos para acceder a esta página.');
+      this.router.navigate(['/seleccion']); // Redirige a la página de alumno
       return false;
     }
+    
+    return true;
   }
 }
