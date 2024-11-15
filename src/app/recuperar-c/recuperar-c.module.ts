@@ -8,6 +8,7 @@ import { RecuperarCPageRoutingModule } from './recuperar-c-routing.module';
 
 import { RecuperarCPage } from './recuperar-c.page';
 
+
 @NgModule({
   imports: [
     CommonModule,
