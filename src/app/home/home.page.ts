@@ -64,10 +64,23 @@ export class HomePage implements OnInit {
 
     // Verificar si es el acceso con código temporal para "alumno"
     const codigoTemporalGuardado = localStorage.getItem('codigoTemporal');
-    if (this.usuario === 'alumno' && this.contrasena === codigoTemporalGuardado) {
-      // Código temporal correcto
-      this.router.navigate(['/seleccion']);
-      return;
+    if (codigoTemporalGuardado) {
+      const { codigo, expiration } = JSON.parse(codigoTemporalGuardado);
+
+      // Verificar si el código ha caducado
+      const currentTime = new Date().getTime();
+      if (currentTime > expiration) {
+        // El código ha caducado, eliminarlo de localStorage
+        localStorage.removeItem('codigoTemporal');
+        await this.mostrarAlerta('Código caducado', 'El código temporal ha caducado, por favor genere uno nuevo.');
+        return;
+      }
+
+      // Verificar si el código ingresado es el mismo que el temporal
+      if (this.usuario === 'alumno' && this.contrasena === codigo) {
+        this.router.navigate(['/seleccion']);
+        return;
+      }
     }
 
     // Lógica de validación normal

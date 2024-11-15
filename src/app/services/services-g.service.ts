@@ -7,6 +7,9 @@ import { Observable, catchError, of } from 'rxjs';
   providedIn: 'root'
 })
 export class ServicesG {
+  validarCorreo(correo: string) {
+    throw new Error('Method not implemented.');
+  }
   validarContrasena(usuario: string, contrasena: string) {
     throw new Error('Method not implemented.');
   }
@@ -164,4 +167,6 @@ export class ServicesG {
     }
     return false;
   }
+
+
 }

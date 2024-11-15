@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
-import { ServicesG } from '../services/services-g.service';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { ContactarSoporteComponent } from '../components/contactar-soporte/contactar-soporte.component';
 
@@ -11,53 +10,98 @@ import { ContactarSoporteComponent } from '../components/contactar-soporte/conta
   styleUrls: ['./recuperar-c.page.scss'],
 })
 export class RecuperarCPage {
-  usuario: string = '';
-  mensajeUsuario: string = '';
-  codigoTemporal: string = ''; // Declaración de la variable para el código temporal
+  usuario: string = '';  // Guardar el nombre de usuario
+  mensajeCorreo: string = ''; // Mensaje de error para el correo
+  mensajeUsuario: string = ''; // Mensaje de error para el nombre de usuario
+
+  correoElectronico: string = ''; // Variable para el correo electrónico
+
+  // Nombre de usuario valido para la validación
+  usuarioValido: string = 'alumno'; 
 
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private servicesG: ServicesG,
+    private loadingController: LoadingController,
     private location: Location,
-    private modalController: ModalController
+    private modalController: ModalController // Inyectamos el ModalController
   ) {}
 
-  // Método para recuperar contraseña
-  async recuperarContrasena() {
-    this.mensajeUsuario = '';  // Limpiar mensaje previo
-
-    // Validar que el usuario haya ingresado un nombre
+  // Método para abrir la ventana emergente que pide el correo
+  async abrirVentanaCorreo() {
+    // Validar que el nombre de usuario haya sido ingresado
     if (!this.usuario) {
-      this.mensajeUsuario = 'Por favor, ingrese su nombre de usuario.';
+      this.mensajeUsuario = 'Por favor ingrese su nombre de usuario.';
       return;
     }
 
-    try {
-      // Llamar al servicio para enviar el correo de recuperación
-      const exito = await this.servicesG.enviarEmailRecuperacion(this.usuario);
-      
-      // Verificar si el correo fue enviado correctamente
-      if (exito) {
-        await this.mostrarAlerta('Éxito', 'Se ha enviado un correo para restablecer su contraseña.');
-        this.router.navigate(['/home']);
-      } else {
-        await this.mostrarAlerta('Error', 'No se pudo enviar el correo. Verifique su usuario.');
-      }
-    } catch (error) {
-      console.error(error);
-      await this.mostrarAlerta('Error', 'Ocurrió un error al intentar enviar el correo.');
+    // Validación del nombre de usuario ingresado
+    if (this.usuario !== this.usuarioValido) {
+      this.mensajeUsuario = 'Nombre de usuario no válido.';
+      return;
     }
+
+    const alert = await this.alertController.create({
+      header: 'Recuperar Contraseña',
+      inputs: [
+        {
+          name: 'correo',
+          type: 'email',
+          placeholder: 'Ingrese su correo electrónico',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Operación cancelada');
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: (data) => {
+            this.correoElectronico = data.correo;  // Guardar el correo ingresado
+            this.simularEnvioCorreo();  // Llamar al método que simula el envío del correo
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
-  // Método para mostrar alertas
-  async mostrarAlerta(titulo: string, mensaje: string) {
-    const alert = await this.alertController.create({
-      header: titulo,
-      message: mensaje,
-      buttons: ['OK']
+  // Método para simular el envío del correo
+  async simularEnvioCorreo() {
+    if (!this.correoElectronico) {
+      this.mensajeCorreo = 'Por favor ingrese un correo válido';
+      return;
+    }
+
+    // Mostrar loading mientras "enviamos" el correo
+    const loading = await this.loadingController.create({
+      message: 'Enviando correo...',
     });
-    await alert.present();
+    await loading.present();
+
+    // Simular un retraso (por ejemplo, 2 segundos) para el envío del correo
+    setTimeout(async () => {
+      // Ocultar el loading
+      await loading.dismiss();
+
+      // Mostrar alerta de éxito
+      const alert = await this.alertController.create({
+        header: 'Éxito',
+        message: 'Se ha enviado un correo con las instrucciones para recuperar su contraseña.',
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+
+      // Redirigir al home
+      this.router.navigate(['/home']);
+    }, 2000); // Tiempo de simulación del envío (2 segundos)
   }
 
   // Método para volver a la página anterior
@@ -65,39 +109,20 @@ export class RecuperarCPage {
     this.location.back();
   }
 
-  // Método para usar la contraseña temporal
-  async usarContrasenaTemporal() {
-    if (this.usuario) {
-      this.generarCodigoTemporal();
-      // Guardar el código temporal en localStorage
-      localStorage.setItem('codigoTemporal', this.codigoTemporal);
-      await this.mostrarAlerta('Contraseña Temporal', `Utiliza el código temporal: ${this.codigoTemporal}`);
-    } else {
-      this.mensajeUsuario = 'Por favor, ingrese su nombre de usuario para usar la contraseña temporal.';
+  // Métodos faltantes de las acciones de la página
+  usarContrasenaTemporal() {
+    if (this.usuario !== this.usuarioValido) {
+      this.mensajeUsuario = 'Nombre de usuario no válido.';
+      return;
     }
+    this.mensajeUsuario = 'La contraseña temporal ha sido activada correctamente.';
   }
 
-  // Método para contactar soporte
-  async contactarSoporte() {
+  // Método para abrir el modal de soporte
+  async abrirModalSoporte() {
     const modal = await this.modalController.create({
-      component: ContactarSoporteComponent,
+      component: ContactarSoporteComponent // Usamos el componente del modal ya existente
     });
-    await modal.present();
-
-    const { data } = await modal.onDidDismiss();
-    if (data?.exito) {
-      this.mostrarAlerta('Éxito', 'Su solicitud ha sido enviada al soporte con éxito.');
-    }
-  }
-
-  // Método para generar un código temporal aleatorio para "alumno"
-  generarCodigoTemporal() {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let codigo = '';
-    for (let i = 0; i < 6; i++) {
-      codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-    }
-    this.codigoTemporal = codigo;  // Asignar el código generado a la propiedad
-    console.log('Código temporal generado:', this.codigoTemporal); // Mostrar el código en consola para pruebas
+    return await modal.present();
   }
 }
