@@ -15,13 +15,19 @@ export class HomePage implements OnInit {
   mensajeContrasena: string = '';
   clima: any = {}; // Variable para almacenar la información del clima
   climaError: string = '';
+  codigoTemporal: string = ''; // Variable para almacenar el código temporal
 
-  constructor(private router: Router, private servicesG: ServicesG, private alertController: AlertController) {}
+  constructor(
+    private router: Router,
+    private servicesG: ServicesG,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.obtenerClima(); // Obtener el clima cuando se cargue la página
   }
 
+  // Método para obtener el clima de San Joaquín
   async obtenerClima() {
     try {
       this.servicesG.obtenerClimaSanJoaquin().subscribe(
@@ -40,10 +46,12 @@ export class HomePage implements OnInit {
     }
   }
 
+  // Método para validar el login del usuario
   async login() {
     this.mensajeUsuario = '';
     this.mensajeContrasena = '';
 
+    // Validación de los campos de usuario y contraseña
     if (!this.usuario) {
       this.mensajeUsuario = 'Por favor, ingrese el nombre de usuario.';
       return;
@@ -54,6 +62,15 @@ export class HomePage implements OnInit {
       return;
     }
 
+    // Verificar si es el acceso con código temporal para "alumno"
+    const codigoTemporalGuardado = localStorage.getItem('codigoTemporal');
+    if (this.usuario === 'alumno' && this.contrasena === codigoTemporalGuardado) {
+      // Código temporal correcto
+      this.router.navigate(['/seleccion']);
+      return;
+    }
+
+    // Lógica de validación normal
     const rol = await this.servicesG.validarUsuario(this.usuario, this.contrasena); // Esperar el resultado de la validación
     if (rol === 'alumno') {
       this.router.navigate(['/seleccion']);
@@ -64,6 +81,7 @@ export class HomePage implements OnInit {
     }
   }
 
+  // Mostrar alerta cuando las credenciales sean incorrectas
   async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -74,6 +92,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
+  // Limpiar los campos de usuario y contraseña
   limpiarCampos() {
     this.usuario = '';
     this.contrasena = '';
@@ -81,10 +100,12 @@ export class HomePage implements OnInit {
     this.mensajeContrasena = '';
   }
 
+  // Redirigir a la página de recuperación de contraseña
   RestablecerC() {
     this.router.navigate(['/recuperar-c']);
   }
 
+  // Método para obtener la URL del icono del clima basado en el código del icono
   getIconUrl(iconCode: string): string {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }

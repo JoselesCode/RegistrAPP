@@ -7,12 +7,16 @@ import { Observable, catchError, of } from 'rxjs';
   providedIn: 'root'
 })
 export class ServicesG {
+  validarContrasena(usuario: string, contrasena: string) {
+    throw new Error('Method not implemented.');
+  }
   private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
   private apiUrl: string = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${this.apiKey}&units=metric`;
 
   private usuarioDocente = 'docente';
   private contrasenaDocente = '1234';
   private accesoDocente = 'soydocente';
+  private contrasenaTemporal: string = ''; // Contraseña temporal variable
 
   private usuarioAlumno = 'alumno';
   private contrasenaAlumno = '12345';
@@ -82,8 +86,15 @@ export class ServicesG {
   }
 
   // Método para enviar un email de recuperación de contraseña
-  enviarEmailRecuperacion(usuario: string): boolean {
-    return usuario === 'usuarioExistente';
+  enviarEmailRecuperacion(usuario: string): Promise<boolean> {
+    return this.http.post<any>('URL_DE_TU_API', { usuario }).toPromise()
+      .then(response => {
+        return response.exito; // O la propiedad que indique si fue exitoso
+      })
+      .catch(error => {
+        console.error('Error al enviar correo:', error);
+        return false;
+      });
   }
 
   // Implementar el método para cerrar sesión
@@ -131,5 +142,26 @@ export class ServicesG {
       return 'docente';
     }
     return ''; // Retorna una cadena vacía si no hay rol
+  }
+
+  // Generar una nueva contraseña temporal aleatoria
+  generarContrasenaTemporal(): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let contrasena = '';
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * caracteres.length);
+      contrasena += caracteres[randomIndex];
+    }
+    this.contrasenaTemporal = contrasena;
+    return contrasena;
+  }
+
+  // Verificar si la contraseña temporal es válida
+  verificarContrasenaTemporal(usuario: string, contrasena: string): boolean {
+    if (usuario === 'alumno' && contrasena === this.contrasenaTemporal) {
+      this.contrasenaTemporal = ''; // Resetear la contraseña temporal después de su uso
+      return true;
+    }
+    return false;
   }
 }
