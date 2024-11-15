@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContactarSoporteComponent } from '../components/contactar-soporte/contactar-soporte.component'; // Importa el componente de soporte
@@ -31,7 +31,8 @@ export class RecuperarCPage {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private location: Location,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastController: ToastController // Para mostrar un mensaje de confirmación al copiar
   ) {}
 
   // Método para abrir la ventana emergente que pide el correo
@@ -86,18 +87,14 @@ export class RecuperarCPage {
       return;
     }
 
-    // Mostrar loading mientras "enviamos" el correo
     const loading = await this.loadingController.create({
       message: 'Enviando correo...',
     });
     await loading.present();
 
-    // Simular un retraso (por ejemplo, 2 segundos) para el envío del correo
     setTimeout(async () => {
-      // Ocultar el loading
       await loading.dismiss();
 
-      // Mostrar alerta de éxito
       const alert = await this.alertController.create({
         header: 'Éxito',
         message: 'Se ha enviado un correo con las instrucciones para recuperar su contraseña.',
@@ -105,10 +102,8 @@ export class RecuperarCPage {
       });
 
       await alert.present();
-
-      // Redirigir al home
       this.router.navigate(['/home']);
-    }, 2000); // Tiempo de simulación del envío (2 segundos)
+    }, 2000);
   }
 
   // Método para volver a la página anterior
@@ -123,24 +118,20 @@ export class RecuperarCPage {
       return;
     }
   
-    // Si no se ha generado una contraseña temporal o ya ha expirado, generar una nueva
     if (!this.contrasenaTemporalGenerada || this.contrasenaTemporalExpirada) {
       this.generarContrasenaTemporal();
     } else {
       this.mensajeUsuario = 'Ya se ha generado una contraseña temporal. Válida solo por 2 minutos.';
     }
   
-    // Crear una alerta para mostrar el mensaje, la contraseña generada, y el botón de copiar
     const alert = await this.alertController.create({
       header: 'Contraseña Temporal',
-      message: `La contraseña temporal generada es:${this.contrasenaTemporalGenerada}`,
+      message: `La contraseña temporal generada es: ${this.contrasenaTemporalGenerada}`,
       buttons: [
         {
           text: 'Copiar',
           handler: () => {
-            // Copiar la contraseña temporal al portapapeles
-            navigator.clipboard.writeText(this.contrasenaTemporalGenerada);
-            console.log('Contraseña copiada al portapapeles');
+            this.copiarAlPortapapeles(this.contrasenaTemporalGenerada);
           }
         },
         {
@@ -150,14 +141,12 @@ export class RecuperarCPage {
       ]
     });
   
-    // Presentar la alerta
     await alert.present();
     this.router.navigate(['/home']);
   }
 
   // Método para generar una nueva contraseña temporal aleatoria
   generarContrasenaTemporal() {
-    // Generación de la contraseña aleatoria
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let contrasena = '';
     for (let i = 0; i < 8; i++) {
@@ -165,28 +154,34 @@ export class RecuperarCPage {
       contrasena += caracteres[randomIndex];
     }
 
-    // Guardar la contraseña temporal
     this.contrasenaTemporalGenerada = contrasena;
     this.contrasenaTemporalExpirada = false;
 
-    // Establecer un temporizador de 2 minutos
     this.temporizador = setTimeout(() => {
       this.contrasenaTemporalExpirada = true;
       this.mensajeUsuario = 'La contraseña temporal ha expirado.';
-    }, 2 * 60 * 1000); // 2 minutos en milisegundos
+    }, 2 * 60 * 1000); // 2 minutos
+  }
+
+  // Método para copiar al portapapeles
+  async copiarAlPortapapeles(texto: string) {
+    await navigator.clipboard.writeText(texto);
+    const toast = await this.toastController.create({
+      message: 'Contraseña copiada al portapapeles',
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 
   // Método para abrir el modal de soporte
   async abrirModalSoporte() {
     const modal = await this.modalController.create({
-      component: ContactarSoporteComponent, // El componente que usas para contactar soporte
-      cssClass: 'my-custom-class', // Si quieres agregar una clase personalizada
+      component: ContactarSoporteComponent,
+      cssClass: 'my-custom-class',
     });
-
-    // Presentar el modal
     await modal.present();
 
-    // Si necesitas hacer algo después de que se cierre el modal
     const { data } = await modal.onDidDismiss();
     console.log('Modal cerrado', data);
   }

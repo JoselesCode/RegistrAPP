@@ -19,7 +19,8 @@ export class ServicesG {
   private usuarioDocente = 'docente';
   private contrasenaDocente = '1234';
   private accesoDocente = 'soydocente';
-  private contrasenaTemporal: string = ''; // Contraseña temporal variable
+  private contrasenaTemporal: string = '';
+  tiempoExpiracion: number = Date.now() + 120000;
 
   private usuarioAlumno = 'alumno';
   private contrasenaAlumno = '12345';
@@ -152,17 +153,16 @@ export class ServicesG {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let contrasena = '';
     for (let i = 0; i < 8; i++) {
-      const randomIndex = Math.floor(Math.random() * caracteres.length);
-      contrasena += caracteres[randomIndex];
+      contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
     this.contrasenaTemporal = contrasena;
-    return contrasena;
+    this.tiempoExpiracion = Date.now() + 2 * 60 * 1000; // Expira en 2 minutos
+    return this.contrasenaTemporal;
   }
 
-  // Verificar si la contraseña temporal es válida
   verificarContrasenaTemporal(usuario: string, contrasena: string): boolean {
-    if (usuario === 'alumno' && contrasena === this.contrasenaTemporal) {
-      this.contrasenaTemporal = ''; // Resetear la contraseña temporal después de su uso
+    // Verifica si el usuario es "alumno", la contraseña es correcta y la contraseña no ha expirado
+    if (usuario === 'alumno' && contrasena === this.contrasenaTemporal && Date.now() < this.tiempoExpiracion) {
       return true;
     }
     return false;

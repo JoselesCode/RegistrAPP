@@ -13,9 +13,10 @@ export class HomePage implements OnInit {
   contrasena: string = '';
   mensajeUsuario: string = '';
   mensajeContrasena: string = '';
-  clima: any = {}; // Variable para almacenar la información del clima
-  climaError: string = '';
-  codigoTemporal: string = ''; // Variable para almacenar el código temporal
+  clima: any = {}; // Almacena la información del clima
+  climaError: string = ''; // Almacena mensaje de error si no se obtiene el clima
+  codigoTemporal: string = ''; // Almacena el código temporal si se utiliza
+  contrasenaTemporalGenerada: string = ''; // Esto debe ser generado en algún momento antes de validarlo
 
   constructor(
     private router: Router,
@@ -24,7 +25,7 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.obtenerClima(); // Obtener el clima cuando se cargue la página
+    this.obtenerClima(); // Obtiene el clima al cargar la página
   }
 
   // Método para obtener el clima de San Joaquín
@@ -33,7 +34,7 @@ export class HomePage implements OnInit {
       this.servicesG.obtenerClimaSanJoaquin().subscribe(
         (data: any) => {
           this.clima = data;
-          this.climaError = ''; // Limpiar mensaje de error si la solicitud es exitosa
+          this.climaError = ''; // Limpia el mensaje de error si la solicitud es exitosa
         },
         (error: any) => {
           console.error('Error obteniendo el clima:', error);
@@ -63,7 +64,7 @@ export class HomePage implements OnInit {
     }
 
     // Verificar si es el acceso con código temporal para "alumno"
-    if (this.usuario === 'alumno' && this.servicesG.verificarContrasenaTemporal(this.usuario, this.contrasena)) {
+    if (this.usuario === 'alumno' && this.servicesG.verificarContrasenaTemporal(this.usuario, this.contrasenaTemporalGenerada)) {
       this.router.navigate(['/seleccion']);
       return;
     }
@@ -79,7 +80,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Mostrar alerta cuando las credenciales sean incorrectas
+  // Método para mostrar una alerta cuando las credenciales sean incorrectas
   async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -90,7 +91,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  // Limpiar los campos de usuario y contraseña
+  // Método para limpiar los campos de usuario y contraseña
   limpiarCampos() {
     this.usuario = '';
     this.contrasena = '';
@@ -98,7 +99,7 @@ export class HomePage implements OnInit {
     this.mensajeContrasena = '';
   }
 
-  // Redirigir a la página de recuperación de contraseña
+  // Método para redirigir a la página de recuperación de contraseña
   RestablecerC() {
     this.router.navigate(['/recuperar-c']);
   }
