@@ -38,3 +38,21 @@ p {
   margin-top: 20px;
   font-weight: bold;
 }
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--ion-color-light); // Color del fondo del botón
+}
+
+ion-button {
+  width: 100%;
+  justify-content: center;
+  color: var(--ion-color-primary); // Color del ícono
+  font-size: 1.2em;
+}
+
+ion-icon {
+  font-size: 24px;
+}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { ServicesG } from '../services/services-g.service';
+
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomePage implements OnInit {
   constructor(
     private router: Router,
     private servicesG: ServicesG,
-    private alertController: AlertController
+    private navCtrl: NavController,
+    private alertController: AlertController,
   ) {}
 
   ngOnInit() {
@@ -108,4 +110,10 @@ export class HomePage implements OnInit {
   getIconUrl(iconCode: string): string {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
-}
+
+  irInformacion() {
+    this.router.navigate(['/informacion']);
+  }
+} 
+
+

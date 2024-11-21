@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard'; // Importa tu guard
-
+ 
 const routes: Routes = [
   {
     path: 'home',
@@ -31,14 +31,18 @@ const routes: Routes = [
     loadChildren: () => import('./recuperar-c/recuperar-c.module').then(m => m.RecuperarCPageModule)
   },
   {
+    path: 'qr',
+    loadChildren: () => import('./qr/qr.module').then(m => m.QrPageModule)
+  },  
+  {
+    path: 'informacion',
+    loadChildren: () => import('./informacion/informacion.module').then( m => m.InformacionPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
   },
-  {
-    path: 'qr',
-    loadChildren: () => import('./qr/qr.module').then(m => m.QrPageModule)
-  }
-];
+  ];
 
 @NgModule({
   imports: [

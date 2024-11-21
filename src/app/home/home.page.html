@@ -51,10 +51,12 @@
   <div *ngIf="climaError" style="color: red; text-align: center; margin-top: 20px;">
     <p>{{ climaError }}</p>
   </div>
-</ion-content>
 
 <ion-footer>
   <ion-toolbar>
+    <ion-button expand="block" (click)="irInformacion()">
+      <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+    </ion-button>
     <ion-title class="ion-text-center">
       Proyecto de JoseDiazG
     </ion-title>
