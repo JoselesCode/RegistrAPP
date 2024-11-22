@@ -2,12 +2,21 @@
   <ion-toolbar>
     <ion-title class="ion-text-center">INFORMACIÓN</ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="volver()" shape="round" class="cuadro-boton">Volver</ion-button>
+      <ion-button (click)="volver()" shape="round" class="cuadro-boton">
+        <img 
+          style="margin-right: 10px; filter: invert(1);" 
+          width="32" 
+          height="32" 
+          src="https://img.icons8.com/windows/32/circled-left.png" 
+          alt="circled-left" 
+        />
+        <span>Volver</span>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" >
+<ion-content class="ion-padding">
   <h2 class="titulo">Bienvenido a la página de Información</h2>
   <p class="descripcion">
     A continuación, te presentamos una guía paso a paso para usar la aplicación **RegistrAPP**.
@@ -17,7 +26,7 @@
     <li class="paso">
       <strong>Ingresa a la aplicación:</strong> Localiza el icono de **RegistrAPP** en tu dispositivo y ábrela.
       <br>
-      <img src="assets/img/paso1.png" alt="Icono de la aplicación" class="imagen">
+      <img src="assets/img/logo.png" alt="Icono de la aplicación" class="logo-imagen">
     </li>
 
     <li class="paso">
@@ -26,13 +35,14 @@
         <li>
           Si olvidaste tu contraseña, selecciona el botón <strong>Recuperar</strong>.
           <br>
-          <img src="assets/img/paso2.png" alt="Pantalla de recuperación de contraseña" class="imagen">
+          <img src="assets/img/Paso1.png" alt="Pantalla de recuperación de contraseña" class="imagen">
         </li>
       </ul>
     </li>
 
     <li class="paso">
       <strong>Opciones al ingresar:</strong> Ingresa tu nombre de usuario para habilitar las siguientes opciones:
+      <img src="assets/img/paso2.png" alt="Recuperar contraseña por correo" class="imagen">
       <ul>
         <li>
           Ingresa tu correo electrónico y haz clic en <strong>Aceptar</strong>. Recibirás un correo con instrucciones para recuperar tu contraseña.
@@ -49,17 +59,25 @@
           <br>
           <img src="assets/img/paso 5.png" alt="Formulario de soporte" class="imagen">
         </li>
-        <li>
-          Selecciona tu rol: <strong>Docente</strong> o <strong>Alumno</strong> según corresponda.
-          <br>
-          <img src="assets/img/paso7.png" alt="Selección de rol" class="imagen">
-        </li>
-        <li>
-          Para escanear un código QR, selecciona el ícono de escaneo en la parte inferior de la pantalla. Esto abrirá la cámara para realizar el escaneo.
-          <br>
-          <img src="assets/img/paso8.png" alt="Escaneo de código QR" class="imagen">
-        </li>
       </ul>
     </li>
+
+    <li class="paso">
+      <strong>Al iniciar sesión, Selecciona tu rol:</strong> Elige adecuadamente tu rol de <strong>Docente</strong> o <strong>Alumno</strong> según corresponda.
+      <br>
+      <img src="assets/img/paso7.png" alt="Selección de rol" class="imagen">
+    </li>
+
+    <li class="paso">
+      <strong>Escanear un código QR:</strong> Para escanear un código QR, selecciona el ícono de escaneo en la parte inferior de la pantalla. Esto abrirá la cámara para realizar el escaneo.
+      <br>
+      <img src="assets/img/paso8.png" alt="Escaneo de código QR" class="imagen">
+    </li>
   </ol>
+
+  <h2 class="ion-text-center"> Si aun tienes dudas, no dudes en contactarte con el soporte de la app</h2>
+  <ion-button expand="block" color="primary" (click)="RestablecerC()">
+    Contactar con Soporte
+    <img width="26" height="26" src="https://img.icons8.com/metro/26/technical-support.png" alt="technical-support" style="margin-left: 8px;"/>
+  </ion-button>
 </ion-content>

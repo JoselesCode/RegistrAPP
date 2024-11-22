@@ -10,3 +10,11 @@
     background-color: var(--ion-color-primary); /* Color de fondo al pasar el ratón */
     color: var(--ion-color-light); /* Color del texto al pasar el ratón */
   }
+  .boton-animado {
+    transition: transform 0.2s ease-in-out; /* Transición suave */
+  }
+  
+  .boton-animado:active {
+    transform: scale(0.95); /* Hace que el botón se haga más pequeño al hacer clic */
+  }
+  

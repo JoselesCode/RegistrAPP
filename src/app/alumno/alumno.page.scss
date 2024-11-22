@@ -37,3 +37,31 @@
   #container a {
     text-decoration: none;
   }
+  ion-page {
+    --background: black; /* Cambia el fondo de toda la página a negro */
+  }
+  
+  ion-header {
+    background: black; /* Si también quieres que el encabezado tenga fondo negro */
+  }
+  
+  ion-toolbar {
+    --background: black; /* Cambia el fondo de la barra de herramientas a negro */
+    color: white; /* Cambia el color del texto del encabezado a blanco */
+  }
+  
+  ion-title {
+    color: white; /* Asegura que el título en el encabezado sea blanco */
+  }
+  
+  ion-content {
+    --background: black; /* Cambia el fondo del contenido a negro */
+    color: white; /* Cambia el color del texto a blanco */
+  }
+  
+  .titulo,
+  .descripcion,
+  .paso {
+    color: white; /* Cambia el color del texto de las listas a blanco */
+  }
+  

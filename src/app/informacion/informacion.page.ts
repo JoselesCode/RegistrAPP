@@ -13,7 +13,9 @@ export class InformacionPage implements OnInit {
 
   ngOnInit() {
   }
-
+  RestablecerC() {
+    this.router.navigate(['/recuperar-c']);
+  }
 
 
   volver() {
