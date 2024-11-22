@@ -22,15 +22,23 @@
       </ion-item>
       <ion-text color="danger" *ngIf="mensajeContrasena">{{ mensajeContrasena }}</ion-text>
 
-      <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">Iniciar Sesión</ion-button>
-
+      <ion-button expand="full" style="--background: #ffeb3b;" (click)="login()">
+        <span>Iniciar Sesión</span>
+        <ion-icon 
+          name="log-in-outline" 
+          style="margin-left: 10px; color: white;"
+        ></ion-icon>
+      </ion-button>
+      
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" fill="outline" color="medium" (click)="limpiarCampos()">Limpiar</ion-button>
+            <ion-button expand="block" color="medium" (click)="limpiarCampos()">
+              <ion-icon name="backspace-outline"></ion-icon> Limpiar</ion-button>
           </ion-col>
           <ion-col>
-            <ion-button expand="block" fill="outline" color="primary" (click)="RestablecerC()">Recuperar</ion-button>
+            <ion-button expand="block" color="primary" (click)="RestablecerC()">
+               Recuperar <ion-icon name="sync-outline"> </ion-icon></ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
