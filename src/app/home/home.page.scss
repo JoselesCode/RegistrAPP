@@ -56,3 +56,9 @@ ion-button {
 ion-icon {
   font-size: 24px;
 }
+.logo-imagen {
+  width: 50px; /* Ajusta el tamaño según lo desees */
+  height: auto; /* Mantiene la proporción original */
+  display: inline-block; /* Cambia de bloque a inline-block para que no ocupe toda la línea */
+  margin-right: 15px; /* Agrega espacio a la derecha de la imagen (opcional) */
+}
