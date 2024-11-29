@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Asignatura: {{ asignatura }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2>Historial de {{ asignatura }}</h2>
+  <ion-list *ngIf="historialAsignatura.length > 0; else noHistorial">
+    <ion-item *ngFor="let qr of historialAsignatura">{{ qr }}</ion-item>
+  </ion-list>
+  <ng-template #noHistorial>
+    <p>No hay QR registrados para esta asignatura.</p>
+  </ng-template>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="scanQR()">Escanear QR</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

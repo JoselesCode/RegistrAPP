@@ -4,6 +4,8 @@ import { ServicesG } from '../services/services-g.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { ModalController } from '@ionic/angular';
+import { ModalAsignaturaComponent } from '../modal-asignatura/modal-asignatura.component';
 
 @Component({
   selector: 'app-alumno',
@@ -14,8 +16,10 @@ export class AlumnoPage {
   usuario: string | null = '';
   result: string = ''; // Para almacenar el resultado del escaneo
   historialQR: string[] = [];
+  asignaturas: string[] = ['Matemáticas', 'Historia', 'Ciencias'];
 
   constructor(
+    private modalCtrl: ModalController,
     private servicesG: ServicesG,
     private location: Location,
     private router: Router
@@ -59,5 +63,17 @@ export class AlumnoPage {
     } else {
       alert('Permiso para usar la cámara denegado.');
     }
+
+    
+  }
+  async abrirModalAsignatura(asignatura: string) {
+    const modal = await this.modalCtrl.create({
+      component: ModalAsignaturaComponent,
+      componentProps: {
+        asignatura: asignatura,
+        usuario: this.usuario,
+      },
+    });
+    return await modal.present();
   }
 }

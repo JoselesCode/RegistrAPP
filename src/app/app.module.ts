@@ -9,11 +9,14 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { ContactarSoporteComponent } from './components/contactar-soporte/contactar-soporte.component';
+import { ModalAsignaturaComponent } from './modal-asignatura/modal-asignatura.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactarSoporteComponent,
+    ModalAsignaturaComponent
   ],
   imports: [
     BrowserModule,

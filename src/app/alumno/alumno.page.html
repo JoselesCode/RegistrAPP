@@ -30,6 +30,20 @@
 <ion-content class="sin-fondo">
   <h2>Bienvenido, {{ usuario }}</h2>
   <ion-list>
+    <ion-item *ngFor="let asignatura of asignaturas">
+      <ion-label>{{ asignatura }}</ion-label>
+      <ion-button (click)="abrirModalAsignatura(asignatura)">
+        Ver historial
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <hr>
+
+
+
+
+  <ion-list>
     <ion-item *ngIf="result">
       Último QR leído: {{ result }}
     </ion-item>

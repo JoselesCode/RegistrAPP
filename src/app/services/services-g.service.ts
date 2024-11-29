@@ -4,15 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServicesG {
-  validarCorreo(correo: string) {
-    throw new Error('Method not implemented.');
-  }
-  validarContrasena(usuario: string, contrasena: string) {
-    throw new Error('Method not implemented.');
-  }
   private apiKey: string = '606d647c5e9f50c12197183edb586441'; // Reemplaza con tu API Key
   private apiUrl: string = `https://api.openweathermap.org/data/2.5/weather?q=San%20Joaquín,CL&appid=${this.apiKey}&units=metric`;
 
@@ -41,7 +35,7 @@ export class ServicesG {
   // Método para obtener el clima de San Joaquín
   obtenerClimaSanJoaquin(): Observable<any> {
     return this.http.get(this.apiUrl).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error('Error al obtener el clima', error);
         return of(null); // Retorna un observable nulo en caso de error
       })
@@ -62,7 +56,7 @@ export class ServicesG {
       return 'docente';
     } else {
       this.usuarioActual = null;
-      return "";
+      return '';
     }
   }
 
@@ -91,11 +85,13 @@ export class ServicesG {
 
   // Método para enviar un email de recuperación de contraseña
   enviarEmailRecuperacion(usuario: string): Promise<boolean> {
-    return this.http.post<any>('URL_DE_TU_API', { usuario }).toPromise()
-      .then(response => {
+    return this.http
+      .post<any>('URL_DE_TU_API', { usuario })
+      .toPromise()
+      .then((response) => {
         return response.exito; // O la propiedad que indique si fue exitoso
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error al enviar correo:', error);
         return false;
       });
@@ -131,6 +127,21 @@ export class ServicesG {
     return datos ? JSON.parse(datos) : [];
   }
 
+  // Guardar historial de QR por asignatura
+  guardarHistorialPorAsignatura(usuario: string, asignatura: string, qrContent: string) {
+    const clave = `${usuario}-${asignatura}`;
+    const historial = this.obtenerHistorialPorAsignatura(usuario, asignatura) || [];
+    historial.push(qrContent);
+    localStorage.setItem(clave, JSON.stringify(historial));
+  }
+
+  // Obtener historial de QR por asignatura
+  obtenerHistorialPorAsignatura(usuario: string, asignatura: string): string[] {
+    const clave = `${usuario}-${asignatura}`;
+    const datos = localStorage.getItem(clave);
+    return datos ? JSON.parse(datos) : [];
+  }
+
   // Método para limpiar el usuario actual
   limpiarUsuarioActual() {
     localStorage.removeItem('usuarioActual'); // Limpiar el usuario actual del almacenamiento local
@@ -161,12 +172,9 @@ export class ServicesG {
   }
 
   verificarContrasenaTemporal(usuario: string, contrasena: string): boolean {
-    // Verifica si el usuario es "alumno", la contraseña es correcta y la contraseña no ha expirado
     if (usuario === 'alumno' && contrasena === this.contrasenaTemporal && Date.now() < this.tiempoExpiracion) {
       return true;
     }
     return false;
   }
-
-
 }
