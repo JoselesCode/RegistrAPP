@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-
     <h1 class="ion-text-center">RegistrAPP</h1>
     <h5 class="ion-text-center">Registra tu asistencia de forma rápida y segura</h5>
     <ion-title>Selecciona tu Rol:</ion-title>
@@ -26,12 +25,11 @@
         ></ion-icon>
       </ion-button>
     </ion-buttons>
-    
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" (click)="irDocente()">
+  <ion-button expand="full" (click)="confirmarSeleccionRol('Docente')">
     <span>Docente</span>
     <img 
       style="margin-left: 10px;" 
@@ -42,9 +40,8 @@
     />
   </ion-button>
   
-
   <hr>
-  <ion-button expand="full" (click)="irAlumno()" > 
+  <ion-button expand="full" (click)="confirmarSeleccionRol('Alumno')"> 
     <span>Alumno</span>
     <img 
       style="margin-left: 10px;" 
@@ -54,9 +51,8 @@
       alt="raise-a-hand-to-answer"
     />
   </ion-button>
-  
-    
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-title class="ion-text-center">

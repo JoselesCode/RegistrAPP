@@ -17,6 +17,37 @@ export class SeleccionPage {
     private location: Location // Inyectar Location
   ) {}
 
+  // Método para manejar la selección de rol y mostrar confirmación
+  async confirmarSeleccionRol(rol: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Selección',
+      message: `¿Estás seguro que deseas elegir el rol de ${rol}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Selección de rol cancelada');
+          }
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            // Si el rol es "Docente", abre el cuadro de código de acceso
+            if (rol === 'Docente') {
+              this.irDocente();
+            } else if (rol === 'Alumno') {
+              this.irAlumno();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   irAlumno() {
     this.router.navigate(['/alumno']);
   }
