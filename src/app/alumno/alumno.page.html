@@ -32,16 +32,13 @@
   <ion-list>
     <ion-item *ngFor="let asignatura of asignaturas">
       <ion-label>{{ asignatura }}</ion-label>
-      <ion-button (click)="abrirModalAsignatura(asignatura)">
-        Ver historial
+      <ion-button (click)="selectAsignatura(asignatura)">
+        Registrar Asistencia
       </ion-button>
     </ion-item>
   </ion-list>
 
   <hr>
-
-
-
 
   <ion-list>
     <ion-item *ngIf="result">

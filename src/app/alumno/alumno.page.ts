@@ -3,7 +3,7 @@ import { ServicesG } from '../services/services-g.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ModalAsignaturaComponent } from '../modal-asignatura/modal-asignatura.component';
 
 @Component({
@@ -15,19 +15,19 @@ export class AlumnoPage implements OnInit {
   usuario: string = ''; // Usuario actual
   result: string = ''; // Para almacenar el resultado del escaneo
   historialQR: string[] = []; // Historial de códigos QR escaneados
-  asignaturas: string[] = ['Matemáticas', 'Historia', 'Ciencias']; // Lista de asignaturas
+  asignaturas: string[] = ['Programación de APP Moviles', 'Portafolio de Titulo', 'Calidad de Software']; // Lista de asignaturas
+  asignaturaSeleccionada: string = ''; // Asignatura seleccionada para el escaneo
 
   constructor(
     private modalCtrl: ModalController,
     private servicesG: ServicesG,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController // Inyectar AlertController
   ) {}
 
   ngOnInit() {
-    const asignatura = 'Matemáticas'; // Puedes cambiar la asignatura por una dinámica si es necesario
     this.usuario = this.servicesG.getUsuarioActual() || ''; // Obtener el usuario actual
-    this.historialQR = this.servicesG.obtenerHistorial(this.usuario, asignatura); // Cargar el historial de esta asignatura
   }
 
   volver() {
@@ -39,23 +39,45 @@ export class AlumnoPage implements OnInit {
     this.router.navigate(['/home']); // Redirigir al inicio
   }
 
+  // Función que muestra un mensaje de confirmación antes de escanear el código QR
+  async confirmarEscaneo() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Selección de Asignatura',
+      message: `¿Estás seguro de que deseas ingresar la asignatura: ${this.asignaturaSeleccionada}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Seleccion cancelada');
+          }
+        },
+        {
+          text: 'Sí, Ingresar',
+          handler: () => {
+            this.abrirModalAsignatura(this.asignaturaSeleccionada); // Solo abrir el modal si el usuario confirma
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // Función de escaneo
   async scan(): Promise<void> {
-    // Verificar permisos de cámara
     const permission = await BarcodeScanner.checkPermission({ force: true });
 
     if (permission.granted) {
-      // Ocultar el fondo durante el escaneo
       BarcodeScanner.hideBackground();
-
+      
       try {
-        // Iniciar el escaneo
         const result = await BarcodeScanner.startScan();
 
         if (result.hasContent) {
-          this.result = result.content; // Guardar el contenido del QR escaneado
-          const asignatura = 'Matemáticas'; // Asignatura actual
-          this.historialQR.push(this.result); // Agregar al historial
-          this.servicesG.guardarHistorial(this.usuario, asignatura, this.historialQR); // Guardar en almacenamiento
+          this.result = result.content;
+          this.historialQR.push(this.result);
+          this.servicesG.guardarHistorial(this.usuario, this.asignaturaSeleccionada, this.historialQR);
           alert('Código QR escaneado: ' + this.result);
         } else {
           alert('No se encontró contenido en el código QR.');
@@ -63,7 +85,6 @@ export class AlumnoPage implements OnInit {
       } catch (error) {
         console.error('Error durante el escaneo:', error);
       } finally {
-        // Mostrar de nuevo el fondo
         BarcodeScanner.showBackground();
       }
     } else {
@@ -71,22 +92,29 @@ export class AlumnoPage implements OnInit {
     }
   }
 
+  // Función para seleccionar la asignatura antes de escanear
+  selectAsignatura(asignatura: string) {
+    this.asignaturaSeleccionada = asignatura;
+    this.confirmarEscaneo(); // Muestra el mensaje de confirmación antes de ver el historial
+  }
+
+  // Abrir el modal para mostrar el historial
   async abrirModalAsignatura(asignatura: string) {
     const modal = await this.modalCtrl.create({
       component: ModalAsignaturaComponent,
       componentProps: {
         asignatura: asignatura,
-        usuario: this.usuario, // Pasar el usuario actual al modal
+        usuario: this.usuario,
       },
     });
     return await modal.present();
   }
 
+  // Función para guardar el QR escaneado en el historial
   async guardarQR(result: string) {
     if (result) {
-      const asignatura = 'Matemáticas'; // Asignatura actual
-      this.historialQR.push(result); // Agregar el QR al historial
-      await this.servicesG.guardarHistorial(this.usuario, asignatura, this.historialQR); // Guardar en almacenamiento
+      this.historialQR.push(result);
+      await this.servicesG.guardarHistorial(this.usuario, this.asignaturaSeleccionada, this.historialQR);
     }
   }
 }
