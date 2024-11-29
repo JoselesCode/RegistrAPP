@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { ContactarSoporteComponent } from '../components/contactar-soporte/contactar-soporte.component'; // Importa el componente de soporte
 
 @Component({
@@ -30,100 +29,52 @@ export class RecuperarCPage {
     private router: Router,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private location: Location,
     private modalController: ModalController,
     private toastController: ToastController // Para mostrar un mensaje de confirmación al copiar
   ) {}
 
-  // Método para abrir la ventana emergente que pide el correo
-  async abrirVentanaCorreo() {
-    // Validar que el nombre de usuario haya sido ingresado
-    if (!this.usuario) {
-      this.mensajeUsuario = 'Por favor ingrese su nombre de usuario.';
-      return;
-    }
-
-    // Validación del nombre de usuario ingresado
-    if (this.usuario !== this.usuarioValido) {
-      this.mensajeUsuario = 'Nombre de usuario no válido.';
-      return;
-    }
-
+  // Método para confirmar si desea solicitar la contraseña temporal
+  async confirmarSolicitarContrasenaTemporal() {
     const alert = await this.alertController.create({
-      header: 'Recuperar Contraseña',
-      inputs: [
-        {
-          name: 'correo',
-          type: 'email',
-          placeholder: 'Ingrese su correo electrónico',
-        },
-      ],
+      header: 'Confirmar Solicitud',
+      message: '¿Estás seguro que deseas solicitar una contraseña temporal?',
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'No',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Operación cancelada');
-          },
+            console.log('Solicitud de contraseña temporal cancelada');
+          }
         },
         {
-          text: 'Aceptar',
-          handler: (data: { correo: string; }) => {
-            this.correoElectronico = data.correo;  // Guardar el correo ingresado
-            this.simularEnvioCorreo();  // Llamar al método que simula el envío del correo
-          },
-        },
-      ],
+          text: 'Sí',
+          handler: () => {
+            this.usarContrasenaTemporal();  // Si acepta, generar la contraseña temporal
+          }
+        }
+      ]
     });
 
     await alert.present();
   }
 
-  // Método para simular el envío del correo
-  async simularEnvioCorreo() {
-    if (!this.correoElectronico) {
-      this.mensajeCorreo = 'Por favor ingrese un correo válido';
-      return;
-    }
-
-    const loading = await this.loadingController.create({
-      message: 'Enviando correo...',
-    });
-    await loading.present();
-
-    setTimeout(async () => {
-      await loading.dismiss();
-
-      const alert = await this.alertController.create({
-        header: 'Éxito',
-        message: 'Se ha enviado un correo con las instrucciones para recuperar su contraseña.',
-        buttons: ['OK'],
-      });
-
-      await alert.present();
-      this.router.navigate(['/home']);
-    }, 2000);
-  }
-
-  // Método para volver a la página anterior
-  volver() {
-    this.router.navigate(['/home']);
-  }
-
   // Método para usar la contraseña temporal
   async usarContrasenaTemporal() {
+    // Validación del nombre de usuario
     if (this.usuario !== this.usuarioValido) {
       this.mensajeUsuario = 'Nombre de usuario no válido.';
       return;
     }
-  
+
+    // Si no hay contraseña temporal generada o si ha expirado, generarla
     if (!this.contrasenaTemporalGenerada || this.contrasenaTemporalExpirada) {
       this.generarContrasenaTemporal();
     } else {
       this.mensajeUsuario = 'Ya se ha generado una contraseña temporal. Válida solo por 2 minutos.';
     }
-  
+
+    // Mostrar la alerta con la contraseña temporal generada
     const alert = await this.alertController.create({
       header: 'Contraseña Temporal',
       message: `La contraseña temporal generada es: ${this.contrasenaTemporalGenerada}`,
@@ -140,9 +91,9 @@ export class RecuperarCPage {
         }
       ]
     });
-  
+
     await alert.present();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home'])
   }
 
   // Método para generar una nueva contraseña temporal aleatoria
@@ -174,6 +125,11 @@ export class RecuperarCPage {
     await toast.present();
   }
 
+  // Método para volver a la página anterior
+  volver() {
+    this.router.navigate(['/home']);
+  }
+
   // Método para abrir el modal de soporte
   async abrirModalSoporte() {
     const modal = await this.modalController.create({
@@ -185,4 +141,10 @@ export class RecuperarCPage {
     const { data } = await modal.onDidDismiss();
     console.log('Modal cerrado', data);
   }
+  // Agrega este método en tu archivo .ts
+abrirVentanaCorreo() {
+  console.log('Abrir ventana de correo para recuperar la contraseña');
+  // Aquí puedes agregar lógica para mostrar un formulario o una ventana emergente
+}
+
 }
