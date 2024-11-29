@@ -21,7 +21,6 @@ export class ServicesG {
 
   private usuarioActual: string | null = null;
   private _storage: Storage | null = null;
-  private storageKey: string = 'historialQR';
 
   constructor(private storage: Storage, private http: HttpClient) {
     this.init();
@@ -37,12 +36,11 @@ export class ServicesG {
     return this.http.get(this.apiUrl).pipe(
       catchError((error) => {
         console.error('Error al obtener el clima', error);
-        return of(null); // Retorna un observable nulo en caso de error
+        return of(null);
       })
     );
   }
 
-  // Validar usuario y guardar en Storage
   async validarUsuario(usuario: string, contrasena: string): Promise<string> {
     if (usuario === this.usuarioAlumno && contrasena === this.contrasenaAlumno) {
       this.usuarioActual = usuario;
@@ -60,95 +58,63 @@ export class ServicesG {
     }
   }
 
-  // Guardar datos de usuario en Storage
   private async guardarDatosUsuario(usuario: string, contrasena: string) {
     await this._storage?.set('usuarioActual', usuario);
     await this._storage?.set('contrasena', contrasena);
   }
 
-  // Obtener datos de usuario desde Storage
   async obtenerDatosUsuario() {
     const usuario = await this._storage?.get('usuarioActual');
     const contrasena = await this._storage?.get('contrasena');
     return { usuario, contrasena };
   }
 
-  // Limpiar datos del Storage
   async limpiarDatos() {
     await this._storage?.clear();
   }
 
-  // Obtener el usuario actual
   getUsuarioActual(): string | null {
     return this.usuarioActual;
   }
 
-  // Método para enviar un email de recuperación de contraseña
-  enviarEmailRecuperacion(usuario: string): Promise<boolean> {
-    return this.http
-      .post<any>('URL_DE_TU_API', { usuario })
-      .toPromise()
-      .then((response) => {
-        return response.exito; // O la propiedad que indique si fue exitoso
-      })
-      .catch((error) => {
-        console.error('Error al enviar correo:', error);
-        return false;
-      });
-  }
-
-  // Implementar el método para cerrar sesión
   async cerrarSesion() {
     await this.limpiarDatos();
     localStorage.removeItem('token');
-    this.limpiarUsuarioActual(); // Limpia el usuario actual
+    this.usuarioActual = null;
   }
 
-  // Verificar autenticación
   estaAutenticado(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // Obtener la contraseña de acceso del docente
   obtenerContrasenaAccesoDocente(): string {
-    return this.accesoDocente; // Retorna la contraseña de acceso
+    return this.accesoDocente;
   }
 
-  // Guardar historial de QR por usuario
-  guardarHistorial(usuario: string, historial: string[]) {
-    const datos = this.obtenerHistorial(usuario) || [];
-    const nuevoHistorial = [...datos, ...historial];
-    localStorage.setItem(this.storageKey + usuario, JSON.stringify(nuevoHistorial));
+  // Guardar historial por asignatura
+  async guardarHistorialPorAsignatura(usuario: string, asignatura: string, qr: string[]) {
+    const key = `${usuario}-${asignatura}`;
+    await this._storage?.set(key, qr);
   }
 
-  // Obtener historial de QR por usuario
-  obtenerHistorial(usuario: string): string[] {
-    const datos = localStorage.getItem(this.storageKey + usuario);
-    return datos ? JSON.parse(datos) : [];
+  // Obtener historial por asignatura
+  async obtenerHistorialPorAsignatura(usuario: string, asignatura: string): Promise<string[]> {
+    const key = `${usuario}-${asignatura}`;
+    const historial = await this._storage?.get(key);
+    return historial || [];
   }
 
-  // Guardar historial de QR por asignatura
-  guardarHistorialPorAsignatura(usuario: string, asignatura: string, qrContent: string) {
-    const clave = `${usuario}-${asignatura}`;
-    const historial = this.obtenerHistorialPorAsignatura(usuario, asignatura) || [];
-    historial.push(qrContent);
-    localStorage.setItem(clave, JSON.stringify(historial));
+  // Limpiar historial por asignatura
+  async limpiarHistorialPorAsignatura(usuario: string, asignatura: string) {
+    const key = `${usuario}-${asignatura}`;
+    await this._storage?.remove(key);
   }
 
-  // Obtener historial de QR por asignatura
-  obtenerHistorialPorAsignatura(usuario: string, asignatura: string): string[] {
-    const clave = `${usuario}-${asignatura}`;
-    const datos = localStorage.getItem(clave);
-    return datos ? JSON.parse(datos) : [];
-  }
-
-  // Método para limpiar el usuario actual
   limpiarUsuarioActual() {
-    localStorage.removeItem('usuarioActual'); // Limpiar el usuario actual del almacenamiento local
-    this.usuarioActual = null; // Limpiar la variable de usuarioActual
+    localStorage.removeItem('usuarioActual');
+    this.usuarioActual = null;
   }
 
-  // Método para obtener el rol del usuario actual desde el token en localStorage
   obtenerRol(): string {
     const token = localStorage.getItem('token');
     if (token === 'tokenAlumno') {
@@ -156,10 +122,9 @@ export class ServicesG {
     } else if (token === 'tokenDocente') {
       return 'docente';
     }
-    return ''; // Retorna una cadena vacía si no hay rol
+    return '';
   }
 
-  // Generar una nueva contraseña temporal aleatoria
   generarContrasenaTemporal(): string {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let contrasena = '';
@@ -167,14 +132,24 @@ export class ServicesG {
       contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
     this.contrasenaTemporal = contrasena;
-    this.tiempoExpiracion = Date.now() + 2 * 60 * 1000; // Expira en 2 minutos
+    this.tiempoExpiracion = Date.now() + 2 * 60 * 1000;
     return this.contrasenaTemporal;
   }
 
   verificarContrasenaTemporal(usuario: string, contrasena: string): boolean {
-    if (usuario === 'alumno' && contrasena === this.contrasenaTemporal && Date.now() < this.tiempoExpiracion) {
-      return true;
-    }
-    return false;
+    return usuario === 'alumno' &&
+      contrasena === this.contrasenaTemporal &&
+      Date.now() < this.tiempoExpiracion;
+  }
+
+
+  obtenerHistorial(usuario: string, asignatura: string): string[] {
+    const key = `${usuario}-${asignatura}`;
+    const historial = localStorage.getItem(key);
+    return historial ? JSON.parse(historial) : [];
+  }
+  guardarHistorial(usuario: string, asignatura: string, qr: string[]) {
+    const key = `${usuario}-${asignatura}`;
+    localStorage.setItem(key, JSON.stringify(qr));
   }
 }
