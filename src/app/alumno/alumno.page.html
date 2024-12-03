@@ -32,34 +32,11 @@
   <ion-list>
     <ion-item *ngFor="let asignatura of asignaturas">
       <ion-label>{{ asignatura }}</ion-label>
-      <ion-button (click)="selectAsignatura(asignatura)">
+      <ion-button (click)="abrirModalAsignatura(asignatura)">
         Registrar Asistencia
       </ion-button>
     </ion-item>
   </ion-list>
-
-  <hr>
-
-  <ion-list>
-    <ion-item *ngIf="result">
-      Último QR leído: {{ result }}
-    </ion-item>
-  </ion-list>
-  
-  <div *ngIf="historialQR.length > 0">
-    <h2>Historial de QR Leídos</h2>
-    <ion-list>
-      <ion-item *ngFor="let qr of historialQR">
-        {{ qr }}
-      </ion-item>
-    </ion-list>
-  </div>
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="scan()">
-      <ion-icon name="scan"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
 
 <ion-footer>
