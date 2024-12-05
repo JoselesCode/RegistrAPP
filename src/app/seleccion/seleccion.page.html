@@ -1,56 +1,65 @@
 <ion-header>
   <ion-toolbar>
-    <h1 class="ion-text-center">RegistrAPP</h1>
-    <h5 class="ion-text-center">Registra tu asistencia de forma rápida y segura</h5>
-    <ion-title>Selecciona tu Rol:</ion-title>
-    <hr>
-    <ion-buttons slot="start">
-      <ion-button (click)="volver()" shape="round" class="cuadro-boton">
-        <img 
-          style="margin-right: 10px; filter: invert(1);" 
-          width="32" 
-          height="32" 
-          src="https://img.icons8.com/windows/32/circled-left.png" 
-          alt="circled-left" 
-        />
-        <span>Volver</span>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="cerrarSesion()" shape="round" class="cuadro-boton">
-        <span>Cerrar Sesión</span>
-        <ion-icon 
-          name="log-out-outline" 
-          style="margin-left: 10px; color: white;"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <div class="botones-superior">
+      <ion-buttons slot="start">
+        <ion-button (click)="volver()" shape="round" class="cuadro-boton">
+          <img 
+            style="margin-right: 10px; filter: invert(1);" 
+            width="24" 
+            height="24" 
+            src="https://img.icons8.com/windows/32/circled-left.png" 
+            alt="circled-left" 
+          />
+          <span>Volver</span>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="cerrarSesion()" shape="round" class="cuadro-boton">
+          <span>Cerrar Sesión</span>
+          <ion-icon 
+            name="log-out-outline" 
+            style="margin-left: 10px; color: white;"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" (click)="confirmarSeleccionRol('Docente')">
-    <span>Docente</span>
-    <img 
-      style="margin-left: 10px;" 
-      width="40" 
-      height="40" 
-      src="https://img.icons8.com/ios/50/training.png" 
-      alt="training" 
-    />
-  </ion-button>
-  
-  <hr>
-  <ion-button expand="full" (click)="confirmarSeleccionRol('Alumno')"> 
-    <span>Alumno</span>
-    <img 
-      style="margin-left: 10px;" 
-      width="40" 
-      height="40" 
-      src="https://img.icons8.com/fluency-systems-regular/50/raise-a-hand-to-answer.png" 
-      alt="raise-a-hand-to-answer"
-    />
-  </ion-button>
+  <div class="fondo-negro">
+    <div class="texto-superior">
+      <h1 class="ion-text-center">RegistrAPP</h1>
+      <h5 class="ion-text-center subtitulo">
+        Registra tu asistencia de forma rápida y segura
+      </h5>
+      <ion-title class="ion-text-center titulo">Selecciona tu Rol:</ion-title>
+    </div>
+  </div>
+
+  <div class="botones-rol">
+    <ion-button expand="full" (click)="confirmarSeleccionRol('Docente')" class="boton-rol">
+      <span>Docente</span>
+      <img 
+        style="margin-left: 10px;" 
+        width="32" 
+        height="32" 
+        src="https://img.icons8.com/ios/50/training.png" 
+        alt="training" 
+      />
+    </ion-button>
+
+    <ion-button expand="full" (click)="confirmarSeleccionRol('Alumno')" class="boton-rol">
+      <span>Alumno</span>
+      <img 
+        style="margin-left: 10px;" 
+        width="32" 
+        height="32" 
+        src="https://img.icons8.com/fluency-systems-regular/50/raise-a-hand-to-answer.png" 
+        alt="raise-a-hand-to-answer" 
+      />
+    </ion-button>
+  </div>
 </ion-content>
 
 <ion-footer>

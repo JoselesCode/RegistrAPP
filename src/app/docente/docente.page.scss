@@ -1,12 +1,108 @@
+/* === Botones === */
 .cuadro-boton {
-    border: 2px solid var(--ion-color-primary); /* Borde de color primario */
-    border-radius: 5px; /* Bordes redondeados */
-    padding: 10px; /* Relleno interno del botón */
-    background-color: var(--ion-color-light); /* Color de fondo */
-    color: var(--ion-color-primary); /* Color del texto */
+  border: 2px solid var(--ion-color-primary); /* Borde primario */
+  border-radius: 8px; /* Bordes más redondeados */
+  padding: 10px 20px; /* Espaciado interno mejorado */
+  background-color: var(--ion-color-light); /* Fondo claro */
+  color: var(--ion-color-primary); /* Texto primario */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease; /* Transición suave en hover */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
+.cuadro-boton:hover {
+  background-color: var(--ion-color-primary); /* Fondo primario */
+  color: var(--ion-color-light); /* Texto claro */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra al pasar el mouse */
+}
+
+.boton-animado {
+  transition: transform 0.2s ease-in-out; /* Suaviza el efecto al clic */
+}
+
+.boton-animado:active {
+  transform: scale(0.95); /* Efecto de click */
+}
+
+/* === Cabecera y estructura superior === */
+.botones-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem; /* Espaciado interno */
+}
+
+/* === Contenido superior === */
+.texto-superior {
+  text-align: center;
+  padding: 2rem 1rem; /* Espaciado interno mejorado */
+  margin-top: 1rem;
+  background-color: #000; /* Fondo negro */
+  color: #fff; /* Texto blanco */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.titulo-principal {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--ion-color-primary); /* Color primario */
+}
+
+.subtitulo {
+  font-size: 1rem;
+  color: #ccc; /* Gris claro */
+}
+
+.titulo {
+  font-size: 1.5rem;
+  color: var(--ion-color-light); /* Texto claro */
+  margin-top: 0.5rem;
+}
+
+/* === Contenido principal === */
+.contenido {
+  margin: 1rem;
+  text-align: center;
+}
+
+hr {
+  border: 1px solid var(--ion-color-primary); /* Línea separadora con color primario */
+  margin: 1rem 0;
+}
+
+/* === Fondo oscuro (aplicable a secciones específicas) === */
+.fondo-negro {
+  background-color: #000; /* Fondo negro */
+  color: #fff; /* Texto blanco */
+  padding: 1rem; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  text-align: center; /* Centrado del contenido */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+}
+
+/* === Medios responsivos === */
+@media (max-width: 768px) {
+  .texto-superior {
+    padding: 1.5rem 1rem;
   }
-  
-  .cuadro-boton:hover {
-    background-color: var(--ion-color-primary); /* Color de fondo al pasar el ratón */
-    color: var(--ion-color-light); /* Color del texto al pasar el ratón */
+
+  .titulo-principal {
+    font-size: 1.8rem;
   }
+
+  .subtitulo {
+    font-size: 0.9rem;
+  }
+
+  .titulo {
+    font-size: 1.3rem;
+  }
+}
+.titulo {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  color: #fff; /* Color blanco para el texto */
+  text-align: center; /* Asegura que el texto esté centrado */
+}

@@ -17,4 +17,74 @@
   .boton-animado:active {
     transform: scale(0.95); /* Hace que el botón se haga más pequeño al hacer clic */
   }
+  ion-header {
+    .botones-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  
+  .texto-superior {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .subtitulo {
+    font-size: 0.9rem;
+    color: gray;
+  }
+  
+  .titulo {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  
+  .botones-rol {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem;
+  }
+  
+  .boton-rol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .fondo-negro {
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco para contraste */
+    padding: 1.5rem; /* Espaciado interno para que no quede pegado */
+    border-radius: 10px; /* Opcional: bordes redondeados para un mejor diseño */
+    margin: 1rem; /* Separación alrededor del contenedor */
+    text-align: center; /* Centra el contenido */
+  }
+  
+  .texto-superior h1,
+  .texto-superior h5,
+  .texto-superior ion-title {
+    color: #fff; /* Asegura que todo el texto sea blanco */
+  }
+  
+  .texto-superior h1 {
+    font-size: 2rem; /* Tamaño de letra para el título principal */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .texto-superior .subtitulo {
+    font-size: 1rem;
+    color: #ccc; /* Gris claro para el subtítulo */
+    margin-bottom: 1rem;
+  }
+  
+  .texto-superior .titulo {
+    font-size: 1.5rem;
+    color: #fff; /* Blanco para el título */
+    margin-top: 0.5rem;
+  }
   

@@ -64,4 +64,71 @@
   .paso {
     color: white; /* Cambia el color del texto de las listas a blanco */
   }
+  ion-header {
+    .botones-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  
+  .texto-superior {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .subtitulo {
+    font-size: 0.9rem;
+    color: gray;
+  }
+  
+  .bienvenido {
+    margin: 1rem;
+    text-align: left;
+    font-size: 1.2rem;
+  }
+  
+  ion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .cuadro-boton {
+    font-size: 0.9rem;
+  }
+  
+  .sin-fondo {
+    --background: none;
+  }
+  .cuadro-fondo-negro {
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco para contraste */
+    padding: 1.5rem; /* Espaciado interno para el contenido */
+    border-radius: 10px; /* Bordes redondeados */
+    margin: 1rem; /* Espaciado externo para separación */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Sombra para un diseño elegante */
+    text-align: center; /* Centra el contenido */
+  }
+  
+  .texto-superior h1 {
+    font-size: 2rem; /* Tamaño del título principal */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #fff; /* Asegura que sea blanco */
+  }
+  
+  .texto-superior h5 {
+    font-size: 1rem; /* Tamaño del subtítulo */
+    color: #ccc; /* Gris claro para contraste */
+    margin-bottom: 1rem;
+  }
+  
+  .texto-superior ion-title {
+    font-size: 1.5rem; /* Tamaño del título */
+    color: #fff; /* Asegura que sea blanco */
+    margin-top: 0.5rem;
+  }
+  
   

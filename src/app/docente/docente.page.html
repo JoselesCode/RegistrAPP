@@ -1,23 +1,50 @@
 <ion-header>
   <ion-toolbar>
-    <h1 class="ion-text-center">RegistrAPP</h1>
-    <h5 class="ion-text-center">Registra tu asistencia de forma rápida y segura</h5>
-    <ion-title>Página del Docente</ion-title>
-    <ion-buttons slot="start">
-      <ion-button (click)="volver()" shape="round" class="cuadro-boton">Volver</ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="cerrarSesion()" shape="round" class="cuadro-boton">Cerrar Sesión</ion-button>
-    </ion-buttons>
+    <div class="botones-superior">
+      <ion-buttons slot="start">
+        <ion-button (click)="volver()" shape="round" class="cuadro-boton boton-animado">
+          <img 
+            style="margin-right: 10px; filter: invert(1);" 
+            width="24" 
+            height="24" 
+            src="https://img.icons8.com/windows/32/circled-left.png" 
+            alt="circled-left" 
+          />
+          <span>Volver</span>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="cerrarSesion()" shape="round" class="cuadro-boton boton-animado">
+          <span>Cerrar Sesión</span>
+          <ion-icon 
+            name="log-out-outline" 
+            style="margin-left: 10px; color: var(--ion-color-primary);"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <h2>Bienvenido, {{ usuario }}</h2>
-  <hr>
-  <h5>Estamos Trabajando en la siguiente actualización para generar QR en rol Docente</h5>
-  <h5>Por su comprensión, Muchas Gracias</h5>
+  <div class="texto-superior fondo-negro">
+    <h1 class="ion-text-center titulo-principal">RegistrAPP</h1>
+    <h5 class="ion-text-center subtitulo">
+      Registra tu asistencia de forma rápida y segura
+    </h5>
+    <ion-title class="ion-text-center titulo">Página del Docente</ion-title>
+  </div>
+
+  <div class="contenido">
+    <h2 class="ion-text-center">Bienvenido, {{ usuario }}</h2>
+    <hr />
+    <h5 class="ion-text-center">
+      Estamos trabajando en la siguiente actualización para generar QR en rol Docente
+    </h5>
+    <h5 class="ion-text-center">Por su comprensión, Muchas Gracias</h5>
+  </div>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-title class="ion-text-center">
