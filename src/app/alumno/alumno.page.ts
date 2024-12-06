@@ -3,7 +3,6 @@ import { ServicesG } from '../services/services-g.service';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ModalAsignaturaComponent } from '../modal-asignatura/modal-asignatura.component';
 
 @Component({
@@ -14,6 +13,7 @@ import { ModalAsignaturaComponent } from '../modal-asignatura/modal-asignatura.c
 export class AlumnoPage implements OnInit {
   usuario: string = ''; // Usuario actual
   asignaturas: string[] = ['Programación de APP Moviles', 'Portafolio de Titulo', 'Calidad de Software']; // Lista de asignaturas
+  historialQR: { asignatura: string; codigo: string }[] = []; // Historial de códigos escaneados
 
   constructor(
     private modalCtrl: ModalController,
@@ -24,6 +24,7 @@ export class AlumnoPage implements OnInit {
 
   ngOnInit() {
     this.usuario = this.servicesG.getUsuarioActual() || ''; // Obtener el usuario actual
+    this.cargarHistorial(); // Cargar historial almacenado
   }
 
   volver() {
@@ -33,6 +34,17 @@ export class AlumnoPage implements OnInit {
   cerrarSesion() {
     this.servicesG.limpiarUsuarioActual(); // Limpiar el usuario actual
     this.router.navigate(['/home']); // Redirigir al inicio
+  }
+
+  // Cargar historial de códigos QR (si estás usando Storage)
+  cargarHistorial() {
+    const historialGuardado = localStorage.getItem(`historial_${this.usuario}`);
+    this.historialQR = historialGuardado ? JSON.parse(historialGuardado) : [];
+  }
+
+  // Guardar historial actualizado
+  guardarHistorial() {
+    localStorage.setItem(`historial_${this.usuario}`, JSON.stringify(this.historialQR));
   }
 
   // Abrir el modal para registrar la asistencia
@@ -45,31 +57,5 @@ export class AlumnoPage implements OnInit {
       },
     });
     return await modal.present();
-  }
-
-  // Función de escaneo de QR (Capacitor)
-  async escanearQR(asignatura: string) {
-    const permission = await BarcodeScanner.checkPermission({ force: true });
-
-    if (permission.granted) {
-      BarcodeScanner.hideBackground();
-
-      try {
-        const result = await BarcodeScanner.startScan();
-
-        if (result.hasContent) {
-          // Guardar el código escaneado para la asignatura actual
-          alert(`Código QR para ${asignatura}: ${result.content}`);
-        } else {
-          alert('No se encontró contenido en el código QR.');
-        }
-      } catch (error) {
-        console.error('Error durante el escaneo:', error);
-      } finally {
-        BarcodeScanner.showBackground();
-      }
-    } else {
-      alert('Permiso para usar la cámara denegado.');
-    }
   }
 }
