@@ -30,7 +30,7 @@ export class ModalAsignaturaComponent {
     this.modalCtrl.dismiss();
   }
 
-  // Método para manejar el escaneo y guardar en el historial
+  // Método para manejar el escaneo, validar y guardar en el historial
   async scan(): Promise<void> {
     const permission = await BarcodeScanner.checkPermission({ force: true });
 
@@ -40,16 +40,22 @@ export class ModalAsignaturaComponent {
 
       if (result.hasContent) {
         this.result = result.content;
-        this.historialQR.push(this.result); // Agregar al historial local
 
-        // Guardar el historial actualizado para la asignatura seleccionada
-        await this.servicesG.guardarHistorial(
-          this.usuario || '',
-          this.asignatura,
-          this.historialQR
-        );
+        // Validar formato del QR
+        if (this.validarFormatoQR(this.result)) {
+          this.historialQR.push(this.result); // Agregar al historial local
 
-        alert('Código QR escaneado: ' + result.content);
+          // Guardar el historial actualizado para la asignatura seleccionada
+          await this.servicesG.guardarHistorial(
+            this.usuario || '',
+            this.asignatura,
+            this.historialQR
+          );
+
+          alert('Código QR válido escaneado: ' + this.result);
+        } else {
+          alert('El formato del código QR no es válido.');
+        }
       } else {
         alert('No se encontró contenido en el código QR.');
       }
@@ -58,5 +64,12 @@ export class ModalAsignaturaComponent {
     } else {
       alert('Permiso para usar la cámara denegado.');
     }
+  }
+
+  // Método para validar el formato del QR
+  validarFormatoQR(qr: string): boolean {
+    // Expresión regular para validar el formato ASIGNATURA|SECCION|SALA|FECHA
+    const regex = /^[^|]+\|[^|]+\|[^|]+\|\d{2}\/\d{2}\/\d{4}$/;
+    return regex.test(qr);
   }
 }
